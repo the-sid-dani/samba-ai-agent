@@ -1,0 +1,1346 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Fork and Rebrand Onyx Repository",
+        "description": "Create SambaAI from Onyx v0.29.1 fork by replacing all references to 'Onyx' and 'DanswerBot' with 'SambaAI', updating logo files, Docker image names, and Python package names.",
+        "details": "1. Fork the Onyx v0.29.1 repository\n2. Perform global find/replace:\n   - 'Onyx' → 'SambaAI'\n   - 'DanswerBot' → 'SambaAI'\n3. Replace logo files in `web/public/`\n4. Update Docker image names in `docker-compose.dev.yml`\n5. Update Python package names in `backend/setup.py`\n6. Verify all references have been updated\n7. Test build to ensure no breaking changes",
+        "testStrategy": "1. Verify no 'Onyx' or 'DanswerBot' references remain using grep\n2. Build Docker images to confirm they build successfully\n3. Run the application locally to verify branding appears correctly\n4. Check package imports work correctly",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Fork the Existing Repository",
+            "description": "Create a new fork of the current codebase to serve as the foundation for the rebranded project.",
+            "dependencies": [],
+            "details": "Ensure all history is preserved and access permissions are set for the new repository.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Global Search and Replace of Brand References",
+            "description": "Perform a comprehensive search and replace to update all instances of the old brand name and identifiers across code, documentation, and configuration files.",
+            "dependencies": [
+              1
+            ],
+            "details": "Use automated tools to minimize manual errors and ensure consistency throughout the project.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Update Logo and Visual Assets",
+            "description": "Replace all old logos and visual brand assets with new ones reflecting the rebranded identity.",
+            "dependencies": [
+              2
+            ],
+            "details": "Update image files, icons, and any embedded branding in documentation or UI components.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Rename Docker Images and Update References",
+            "description": "Rename Docker images to match the new brand and update all references in Dockerfiles, CI/CD pipelines, and documentation.",
+            "dependencies": [
+              2
+            ],
+            "details": "Ensure that image repositories and tags are consistent with the new naming convention.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Rename Python Packages and Modules",
+            "description": "Update Python package names, module imports, and distribution metadata to reflect the new brand.",
+            "dependencies": [
+              2
+            ],
+            "details": "Modify setup files, requirements, and any namespace references as needed.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Verify All References and Branding Updates",
+            "description": "Conduct a thorough review to ensure all references to the old brand have been updated across code, assets, documentation, and configuration.",
+            "dependencies": [
+              3,
+              4,
+              5
+            ],
+            "details": "Perform manual and automated checks to catch any missed instances.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Build and Test Validation",
+            "description": "Run all build processes and automated tests to confirm that the rebranded project functions correctly and all changes are integrated successfully.",
+            "dependencies": [],
+            "details": "Address any issues that arise and ensure the project is ready for release under the new brand.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Configure Base Environment",
+        "description": "Set up the initial environment configuration by creating the necessary .env file with core settings, model configuration, and placeholders for Slack tokens.",
+        "details": "1. Create `deployment/docker_compose/.env` file\n2. Add core settings:\n   - AUTH_TYPE=disabled\n   - LOG_LEVEL=info\n   - POSTGRES_PASSWORD=sambaai123\n   - SECRET_KEY=sambaai-secret-key-change-in-prod\n3. Add model configuration:\n   - GEN_AI_MODEL_PROVIDER=litellm\n   - GEN_AI_MODEL_VERSION=claude-3-sonnet-20240229\n   - FAST_GEN_AI_MODEL_VERSION=claude-3-haiku-20240307\n   - GEN_AI_API_KEY=sk-ant-xxx (placeholder)\n4. Add Slack configuration placeholders:\n   - DANSWER_BOT_SLACK_APP_TOKEN=xapp-xxx\n   - DANSWER_BOT_SLACK_BOT_TOKEN=xoxb-xxx",
+        "testStrategy": "1. Verify .env file is created with all required variables\n2. Run docker-compose to ensure it starts without errors\n3. Access http://localhost:3000 to confirm the application loads\n4. Check database migrations complete successfully",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create the .env File",
+            "description": "Generate a new .env file in the project's root directory to store environment variables securely.",
+            "dependencies": [],
+            "details": "Use a code editor or terminal command (e.g., `touch .env`) to create the file. Ensure the file is not committed to version control by updating .gitignore if necessary.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Add Core Settings to .env",
+            "description": "Insert placeholders for essential core configuration variables in the .env file.",
+            "dependencies": [
+              1
+            ],
+            "details": "Define variables such as APP_ENV, PORT, and DATABASE_URL with clear, descriptive names. Leave values blank or provide example values as needed.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Add Model and Slack Configuration Placeholders",
+            "description": "Include placeholders for model-related and Slack integration settings in the .env file.",
+            "dependencies": [
+              2
+            ],
+            "details": "Add variables like MODEL_API_KEY, MODEL_ENDPOINT, SLACK_BOT_TOKEN, and SLACK_SIGNING_SECRET, following naming conventions and providing comments or documentation as appropriate.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Validate Environment Setup",
+            "description": "Check that all required environment variables are present and correctly formatted in the .env file.",
+            "dependencies": [
+              3
+            ],
+            "details": "Review the .env file for completeness, consistency, and adherence to best practices. Optionally, run a script or use a library to validate the presence and format of each variable.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Create Slack Application",
+        "description": "Configure a new Slack application using the provided manifest, generate the necessary tokens, and update the environment configuration with the real tokens.",
+        "details": "1. Go to https://api.slack.com/apps\n2. Create a new app using the provided YAML manifest\n3. Enable Socket Mode and generate an app-level token with `connections:write` scope\n4. Install the app to the workspace to obtain the bot token\n5. Update the .env file with the real tokens:\n   - DANSWER_BOT_SLACK_APP_TOKEN=xapp-... (real token)\n   - DANSWER_BOT_SLACK_BOT_TOKEN=xoxb-... (real token)",
+        "testStrategy": "1. Verify the Slack app is created with the correct name and description\n2. Confirm all required scopes are enabled\n3. Test that the app-level token has the connections:write scope\n4. Verify the bot token has all the necessary permissions",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create a New Slack App",
+            "description": "Initiate the creation of a new Slack app in the Slack API dashboard, selecting the appropriate workspace.",
+            "dependencies": [],
+            "details": "Navigate to the Slack API dashboard, click to create a new app, and choose the development workspace where the app will be installed.[2]",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Import and Configure the App Manifest",
+            "description": "Import the app manifest file and configure the app's name, description, scopes, functions, and workflows.",
+            "dependencies": [
+              1
+            ],
+            "details": "Choose to create the app from a manifest, paste the manifest configuration, and ensure all required fields (name, description, botScopes, functions, workflows) are set as needed.[2][3][5]",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Enable Socket Mode",
+            "description": "Enable Socket Mode for the Slack app to allow real-time communication via websockets.",
+            "dependencies": [
+              2
+            ],
+            "details": "In the app settings, navigate to the Socket Mode section and enable it to allow the app to receive events over websockets.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Generate and Retrieve Required Tokens",
+            "description": "Generate and securely retrieve the necessary tokens (such as Bot User OAuth Token and App-Level Token) for the app.",
+            "dependencies": [
+              3
+            ],
+            "details": "In the OAuth & Permissions and Basic Information sections, generate and copy the Bot User OAuth Token and App-Level Token (with connections:write scope for Socket Mode).",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Update Environment Configuration",
+            "description": "Update the local or deployment environment configuration with the generated tokens and relevant app settings.",
+            "dependencies": [
+              4
+            ],
+            "details": "Add the retrieved tokens and any other required configuration values to the environment variables or configuration files used by the app.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Implement Core Slack Bot Functionality",
+        "description": "Implement the core bot functionality to handle mentions, process queries, and format responses with citations in the Slack interface.",
+        "details": "1. Modify `backend/onyx/slack/bot.py` to implement:\n   - `handle_mention(event: dict)` function to process @sambaai mentions\n   - `format_response(answer: str, sources: List[Source])` function to format answers with citations\n2. Implement message extraction logic to parse queries from Slack messages\n3. Connect to the retrieval pipeline to get answers\n4. Format responses with proper citations and source links\n5. Implement thread reply functionality\n6. Add error handling for API failures and timeouts",
+        "testStrategy": "1. Test the bot responds to @sambaai mentions\n2. Verify responses include proper citations\n3. Confirm replies are posted in the correct thread\n4. Test error handling by simulating API failures\n5. Verify the bot handles different message formats correctly",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Mention Handling",
+            "description": "Develop logic to detect and process user and bot mentions in Slack messages, ensuring the bot responds only when appropriate.",
+            "dependencies": [],
+            "details": "Parse incoming Slack events for mention patterns and extract relevant user or bot IDs.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Develop Message Parsing Module",
+            "description": "Create a module to parse incoming Slack messages, extracting commands, mentions, and relevant metadata for downstream processing.",
+            "dependencies": [
+              1
+            ],
+            "details": "Support various message formats, including plain text, attachments, and blocks.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Integrate Retrieval Pipeline",
+            "description": "Connect the message parsing output to the retrieval pipeline, enabling the bot to fetch relevant information or responses based on parsed content.",
+            "dependencies": [
+              2
+            ],
+            "details": "Ensure seamless data flow between parsing and retrieval components.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Implement Response Formatting",
+            "description": "Format the retrieved information into Slack-compatible messages, supporting rich formatting, blocks, and attachments as needed.",
+            "dependencies": [
+              3
+            ],
+            "details": "Ensure responses are clear, concise, and adhere to Slack design guidelines.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Enable Threaded Replies",
+            "description": "Add support for replying within Slack threads, maintaining context and ensuring responses are posted in the correct conversation flow.",
+            "dependencies": [
+              4
+            ],
+            "details": "Utilize Slack's thread_ts property to associate replies with the correct parent message.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Implement Error Handling",
+            "description": "Develop robust error handling for all stages, including message parsing, retrieval, formatting, and Slack API interactions.",
+            "dependencies": [
+              5
+            ],
+            "details": "Log errors, provide user-friendly error messages, and ensure system stability.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Comprehensive Testing",
+            "description": "Design and execute tests covering all components, including unit, integration, and end-to-end scenarios for mention handling, parsing, retrieval, formatting, threading, and error cases.",
+            "dependencies": [],
+            "details": "Automate tests where possible and document test coverage and results.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Set Up Confluence API Authentication",
+        "description": "Configure Confluence API access by implementing token-based authentication for the SambaTv Confluence instance.",
+        "details": "1. Modify `backend/onyx/connectors/confluence/connector.py`\n2. Implement API Token authentication flow\n3. Configure base URL to use https://sambatv.atlassian.net/wiki\n4. Set up cloud instance settings\n5. Add secure token storage mechanism\n6. Implement test function to verify connectivity\n7. Add configuration options to .env file:\n   - CONFLUENCE_API_TOKEN=xxx\n   - CONFLUENCE_USERNAME=xxx@sambatv.com",
+        "testStrategy": "1. Generate a test API token in Atlassian\n2. Verify the connector authenticates successfully\n3. Test listing accessible spaces\n4. Confirm token is stored securely (not in logs)\n5. Test error handling for invalid credentials",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Modify Connector for Token Authentication",
+            "description": "Update the existing connector code to support token-based authentication, ensuring that authentication logic is encapsulated and reusable.",
+            "dependencies": [],
+            "details": "Refactor the connector to accept and use tokens for API requests, following best practices for modularity and error handling.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Implement Base URL Configuration",
+            "description": "Set up the connector to use a configurable base URL for API endpoints, avoiding hardcoded values.",
+            "dependencies": [
+              1
+            ],
+            "details": "Allow the base URL to be set via configuration or environment variables to support different environments and API versions.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Configure Secure Token Storage",
+            "description": "Establish a secure method for storing and retrieving authentication tokens, minimizing exposure to security risks.",
+            "dependencies": [
+              1
+            ],
+            "details": "Use environment variables or a secure vault to store tokens, ensuring they are not exposed in code or logs.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Set Up .env Configuration",
+            "description": "Create or update a .env file to manage sensitive configuration values such as tokens and base URLs.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Document required environment variables and ensure the connector reads from the .env file at runtime.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Test API Connectivity and Authentication",
+            "description": "Verify that the connector can successfully authenticate and connect to the API using the configured token and base URL.",
+            "dependencies": [
+              4
+            ],
+            "details": "Perform integration tests to ensure the connector handles authentication, connectivity, and error scenarios robustly.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Review and Harden Security Measures",
+            "description": "Audit the connector for security best practices, focusing on token handling, error logging, and configuration management.",
+            "dependencies": [
+              5
+            ],
+            "details": "Ensure no sensitive data is logged, tokens are securely managed, and the connector is resilient to common security threats.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Implement Confluence Document Ingestion",
+        "description": "Develop the Confluence sync functionality to perform initial full sync and incremental updates of selected spaces, extracting page content, comments, and metadata.",
+        "details": "1. Modify `backend/onyx/connectors/confluence/connector.py` and `backend/onyx/background/indexing/job_supervisor.py`\n2. Implement full sync functionality for selected Confluence spaces\n3. Set up incremental updates to run every 10 minutes\n4. Extract page content, comments, and attachments\n5. Preserve metadata including author, date, and space\n6. Implement chunking strategy for large pages\n7. Add configuration for space selection\n8. Set up proper error handling and retry logic",
+        "testStrategy": "1. Test full sync with a test Confluence space\n2. Verify documents are properly indexed in Vespa\n3. Test incremental sync by making changes to Confluence pages\n4. Confirm search returns Confluence results\n5. Verify metadata is preserved correctly\n6. Test error handling with invalid spaces",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Update Connector Logic",
+            "description": "Revise and enhance the connector to support new data sources, improved extraction, and compatibility with updated job supervisor logic.",
+            "dependencies": [],
+            "details": "Ensure the connector can handle both full and incremental syncs, extract content and metadata, and interface with error handling mechanisms.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Update Job Supervisor",
+            "description": "Modify the job supervisor to orchestrate sync operations, manage task scheduling, and monitor job statuses.",
+            "dependencies": [
+              1
+            ],
+            "details": "Integrate with updated connector logic and ensure robust tracking of sync jobs, including error reporting and recovery.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Implement Full Sync Functionality",
+            "description": "Develop logic to perform a complete data sync from source to destination, ensuring all content and metadata are ingested.",
+            "dependencies": [
+              2
+            ],
+            "details": "Handle large data volumes efficiently and ensure data integrity throughout the process.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Implement Incremental Sync Logic",
+            "description": "Create mechanisms to detect and ingest only new or changed data since the last sync, minimizing resource usage.",
+            "dependencies": [
+              3
+            ],
+            "details": "Ensure incremental syncs preserve consistency and handle edge cases such as deletions or updates.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Content Extraction Module",
+            "description": "Develop a module to extract relevant content from ingested data, preparing it for downstream processing.",
+            "dependencies": [
+              4
+            ],
+            "details": "Support various data formats and ensure extracted content is structured for chunking and storage.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Metadata Preservation",
+            "description": "Ensure all relevant metadata is captured and stored alongside content during both full and incremental syncs.",
+            "dependencies": [
+              5
+            ],
+            "details": "Design data models and storage strategies to maintain metadata integrity and accessibility.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Chunking and Space Selection",
+            "description": "Implement logic to divide extracted content into manageable chunks and select appropriate storage spaces.",
+            "dependencies": [],
+            "details": "Optimize chunk sizes for processing and retrieval, and ensure space selection aligns with data governance policies.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Error Handling and Recovery",
+            "description": "Develop comprehensive error detection, logging, and recovery mechanisms across all pipeline stages.",
+            "dependencies": [],
+            "details": "Ensure the system can gracefully handle failures, retry operations, and provide actionable error reports.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Configure Google Drive Service Account",
+        "description": "Set up Google Drive access by creating a service account with domain delegation and configuring the necessary API permissions.",
+        "details": "1. Create a Google Cloud Project\n2. Enable required APIs: Drive, Admin SDK, Docs, Sheets\n3. Create a service account with domain delegation\n4. Download credentials JSON file\n5. Modify `backend/onyx/connectors/google_drive/connector.py` to use service account\n6. Configure domain-wide delegation\n7. Add credentials file to secure location\n8. Update .env with configuration:\n   - GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json\n   - GOOGLE_ADMIN_EMAIL=admin@sambatv.com",
+        "testStrategy": "1. Verify service account is created successfully\n2. Confirm domain-wide delegation is configured\n3. Test that all required APIs are enabled\n4. Validate credentials file is properly loaded\n5. Test authentication with the Google Drive API",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Google Cloud Project",
+            "description": "Set up a new project in the Google Cloud Console to serve as the container for all related resources.",
+            "dependencies": [],
+            "details": "Navigate to the Google Cloud Console, select 'Create Project', provide a project name and organization, and confirm creation.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Enable Required APIs",
+            "description": "Enable the necessary Google APIs (such as Admin SDK, Calendar API, Drive API, etc.) for the project.",
+            "dependencies": [
+              1
+            ],
+            "details": "In the Google Cloud Console, go to 'APIs & Services' > 'Library', search for each required API, and enable them for your project.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Create Service Account",
+            "description": "Create a service account within the project to allow backend authentication and API access.",
+            "dependencies": [
+              2
+            ],
+            "details": "Go to 'IAM & Admin' > 'Service Accounts', click 'Create Service Account', provide a name and description, and complete the creation process.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Download Service Account Credentials",
+            "description": "Generate and download a JSON key file for the service account to be used by the backend application.",
+            "dependencies": [
+              3
+            ],
+            "details": "After creating the service account, select it, go to 'Keys', click 'Add Key', choose 'JSON', and download the credentials file securely.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Modify Backend Connector for Service Account",
+            "description": "Update the backend connector code to use the downloaded service account credentials for authentication.",
+            "dependencies": [
+              4
+            ],
+            "details": "Integrate the JSON key file into the backend codebase and update authentication logic to use service account credentials.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Delegate Domain-Wide Authority",
+            "description": "Grant the service account domain-wide delegation in the Google Admin Console to allow it to impersonate users.",
+            "dependencies": [
+              3
+            ],
+            "details": "Log in to the Admin Console as a super admin, go to 'Security' > 'API Controls' > 'Manage Domain Wide Delegation', add the service account client ID, and specify required OAuth scopes, then authorize.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Update .env Configuration",
+            "description": "Add or update environment variables in the .env file to reference the service account credentials and relevant configuration.",
+            "dependencies": [
+              4,
+              5,
+              6
+            ],
+            "details": "Set environment variables such as the path to the service account JSON, client email, and any required scopes in the .env file used by the backend.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Implement Google Drive Document Processing",
+        "description": "Develop the Google Drive sync functionality to process different document types, implement folder-based selection, and handle permissions and real-time updates.",
+        "details": "1. Modify `backend/onyx/connectors/google_drive/connector.py`\n2. Implement document processing for:\n   - Google Docs → Markdown conversion\n   - Google Sheets → Structured data extraction\n   - PDFs → Text extraction\n   - Google Slides → Content + notes extraction\n3. Set up folder-based selection mechanism\n4. Implement permission mirroring\n5. Configure real-time updates via push notifications\n6. Add incremental sync functionality\n7. Implement proper error handling and retry logic",
+        "testStrategy": "1. Test syncing a test folder with various document types\n2. Verify all document types are processed correctly\n3. Confirm permissions are respected in search results\n4. Test that Drive results appear in search\n5. Verify real-time updates work when documents change\n6. Test error handling with invalid documents",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Plan and Execute Connector Updates",
+            "description": "Review current connector versions, schedule updates, and ensure all connectors are upgraded to the latest supported version with minimal downtime.",
+            "dependencies": [],
+            "details": "Coordinate with stakeholders, follow vendor-specific update procedures, and verify successful completion of updates.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Identify and Catalog Document Types",
+            "description": "List all document types to be processed by the connector, including their formats and any special handling requirements.",
+            "dependencies": [
+              1
+            ],
+            "details": "Gather requirements from business users and technical documentation to ensure comprehensive coverage.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Implement Document Type Processing Logic",
+            "description": "Develop and update connector logic to correctly process each identified document type, ensuring compatibility and data integrity.",
+            "dependencies": [
+              2
+            ],
+            "details": "Include parsing, validation, and transformation steps as needed for each document type.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Develop Folder Selection Mechanism",
+            "description": "Design and implement a user interface or configuration method for selecting which folders the connector should process.",
+            "dependencies": [
+              3
+            ],
+            "details": "Support recursive selection, exclusion rules, and dynamic folder discovery if required.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Implement Permission Mirroring",
+            "description": "Ensure that the connector accurately mirrors source folder and document permissions to the target system.",
+            "dependencies": [
+              4
+            ],
+            "details": "Map permission models between systems, handle inheritance, and test edge cases.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Integrate Push Notification Support",
+            "description": "Add real-time push notification capabilities to inform users or systems of changes, updates, or errors.",
+            "dependencies": [
+              5
+            ],
+            "details": "Leverage existing notification frameworks or implement custom notification logic as needed.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Enable Incremental Synchronization",
+            "description": "Implement logic to detect and process only changes since the last sync, optimizing performance and reducing resource usage.",
+            "dependencies": [],
+            "details": "Track sync state, handle deletions, updates, and new items efficiently.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Develop Robust Error Handling and Testing",
+            "description": "Design comprehensive error handling mechanisms and create a thorough testing plan covering all features and edge cases.",
+            "dependencies": [],
+            "details": "Include automated tests, manual test cases, and monitoring for production deployments.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Optimize Vector Search Configuration",
+        "description": "Configure and optimize Vespa for technical documentation search by adjusting search weights, chunk sizes, and retrieval parameters.",
+        "details": "1. Modify `backend/onyx/configs/app_configs.py`\n2. Set HYBRID_SEARCH_WEIGHT_MODIFIER = 0.7 to favor semantic search\n3. Configure CHUNK_SIZE = 512 for main chunks\n4. Set MINI_CHUNK_SIZE = 128 for smaller chunks\n5. Adjust TOP_K_CHUNKS = 10 for retrieval\n6. Update Vespa schema for technical documentation\n7. Implement hybrid search configuration\n8. Set up reranking for improved results\n9. Optimize for sub-second query times",
+        "testStrategy": "1. Test search performance with technical queries\n2. Measure query response times\n3. Verify hybrid search works correctly\n4. Test reranking improves result quality\n5. Benchmark performance with different chunk sizes\n6. Verify sub-second query times are achieved",
+        "priority": "high",
+        "dependencies": [
+          6,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Review and Update Configuration Files",
+            "description": "Identify and update relevant configuration files to reflect new settings for search, chunking, schema, and hybrid search.",
+            "dependencies": [],
+            "details": "Locate all configuration files related to the search system. Document current settings and prepare for changes required by subsequent subtasks.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Tune Search Weights",
+            "description": "Adjust search weight parameters to optimize relevance and ranking of search results.",
+            "dependencies": [
+              1
+            ],
+            "details": "Analyze current search weight settings, experiment with new values, and document the impact on search result quality.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Adjust Chunk Size Parameters",
+            "description": "Modify chunk size settings to balance indexing speed, search latency, and resource usage.",
+            "dependencies": [
+              1
+            ],
+            "details": "Determine optimal chunk size based on data volume and system performance. Update configuration files accordingly.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Update Data Schema",
+            "description": "Revise the data schema to support new search features, improved indexing, or hybrid search requirements.",
+            "dependencies": [
+              1
+            ],
+            "details": "Analyze current schema, identify necessary changes, and implement updates to support enhanced search capabilities.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Set Up Hybrid Search",
+            "description": "Configure the system to support hybrid search, combining multiple search strategies (e.g., keyword and semantic search).",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Integrate hybrid search logic into the system, update configuration files, and ensure compatibility with existing features.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Implement Reranking Mechanism",
+            "description": "Add or update reranking logic to improve the ordering of search results based on relevance or other criteria.",
+            "dependencies": [
+              5
+            ],
+            "details": "Develop or configure reranking algorithms, test their impact on search quality, and integrate them into the search pipeline.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Optimize Search Performance",
+            "description": "Apply performance optimization techniques to reduce search latency and resource consumption.",
+            "dependencies": [],
+            "details": "Profile the search system, identify bottlenecks, and implement optimizations such as query restructuring, parallelization, or index tuning.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Benchmark Search System",
+            "description": "Design and execute benchmarks to measure search accuracy, speed, and resource usage before and after optimizations.",
+            "dependencies": [],
+            "details": "Develop benchmarking scripts, collect metrics, and compare results to validate improvements.",
+            "status": "pending"
+          },
+          {
+            "id": 9,
+            "title": "Document Changes and Results",
+            "description": "Compile documentation detailing configuration updates, tuning decisions, schema changes, optimization steps, and benchmarking outcomes.",
+            "dependencies": [],
+            "details": "Ensure all changes are well-documented for future reference and reproducibility.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Configure Claude LLM Integration",
+        "description": "Set up the LLM integration using Claude via LiteLLM, including system prompt configuration, citation handling, and token limit management.",
+        "details": "1. Modify `backend/onyx/llm/factory.py`\n2. Configure LiteLLM to use Claude models\n3. Set up system prompt:\n```\nYou are SambaAI, a helpful assistant for SambaTv employees.\nYou answer questions based on internal documentation.\nAlways cite your sources with document titles and links.\nBe concise but thorough. Use technical language when appropriate.\n```\n4. Implement citation handling in responses\n5. Configure token limits and truncation\n6. Set up fallback to smaller models when needed\n7. Implement caching for common queries",
+        "testStrategy": "1. Test LLM responses to various queries\n2. Verify citations are included correctly\n3. Check that tone and style are appropriate\n4. Test token limits are respected\n5. Measure response times\n6. Verify caching improves performance for repeated queries",
+        "priority": "high",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Factory Modification",
+            "description": "Update or extend the factory pattern to support new LLM integrations, prompt engineering hooks, and modular backend logic.",
+            "dependencies": [],
+            "details": "Refactor the existing factory code to allow dynamic selection and instantiation of LLM providers, ensuring compatibility with LiteLLM and future extensibility.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "LiteLLM Configuration Setup",
+            "description": "Configure LiteLLM with model-specific parameters, API keys, and deployment settings using a config.yaml file.",
+            "dependencies": [
+              1
+            ],
+            "details": "Create and validate a config.yaml file specifying model endpoints, authentication, and performance parameters. Ensure the configuration supports multiple models and fallback logic as needed[1][2][3].",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "System Prompt Setup",
+            "description": "Design and implement system prompt templates and injection logic for consistent prompt engineering across LLM calls.",
+            "dependencies": [
+              2
+            ],
+            "details": "Develop a mechanism to standardize and inject system prompts, supporting both static and dynamic prompt components for various use cases.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Citation Handling Logic",
+            "description": "Implement logic to extract, format, and attach citations to LLM outputs, ensuring traceability and compliance.",
+            "dependencies": [
+              3
+            ],
+            "details": "Develop middleware or post-processing steps to parse model outputs, identify citation markers, and map them to source metadata for downstream consumption.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Token Management",
+            "description": "Integrate token counting, limits, and cost tracking for LLM requests and responses.",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement logic to monitor token usage per request, enforce max token limits, and track usage for cost analysis and alerting[1][2].",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Fallback Logic Implementation",
+            "description": "Develop and integrate fallback mechanisms to switch to alternative models or endpoints upon failure or timeout.",
+            "dependencies": [
+              5
+            ],
+            "details": "Configure LiteLLM and the factory to support automatic failover, retry strategies, and error handling to maximize reliability[3].",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Caching Implementation",
+            "description": "Implement caching for LLM responses to optimize performance and reduce redundant calls.",
+            "dependencies": [],
+            "details": "Integrate a caching layer (e.g., Redis) to store and retrieve LLM outputs based on prompt and parameters, ensuring cache invalidation and consistency with configuration best practices[1].",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Implement Channel-to-DocSet Mapping",
+        "description": "Create the database schema and logic for channel scoping, allowing different Slack channels to access different document sets.",
+        "details": "1. Create database migration for `channel_config` table:\n```sql\nCREATE TABLE channel_config (\n    channel_id VARCHAR PRIMARY KEY,\n    channel_name VARCHAR,\n    doc_scopes JSONB,  -- [\"engineering\", \"product\"]\n    llm_model VARCHAR DEFAULT 'claude-3-sonnet',\n    max_tokens INT DEFAULT 500\n);\n```\n2. Implement channel scope filtering in query pipeline\n3. Add logic to retrieve channel configuration\n4. Modify bot to use channel-specific settings\n5. Implement default configuration for new channels",
+        "testStrategy": "1. Verify table is created and migrated correctly\n2. Test channel scope filtering with different configurations\n3. Confirm bot uses channel-specific settings\n4. Test default configuration for new channels\n5. Verify different channels get different document sets",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          10
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Plan and Execute Database Migration",
+            "description": "Design and implement schema changes to support channel-specific configuration. Migrate existing data as needed, ensuring data integrity and minimal downtime.",
+            "dependencies": [],
+            "details": "Analyze current schema, define new tables/fields for channel-specific config, plan migration strategy (e.g., trickle or zero-downtime), and execute migration with testing.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Implement Scope Filtering Logic",
+            "description": "Update or create logic to filter and apply configuration based on channel scope, ensuring correct behavior per channel.",
+            "dependencies": [
+              1
+            ],
+            "details": "Modify backend logic to retrieve and apply configuration at the channel level, including fallback to defaults if no channel-specific config exists.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Develop Configuration Retrieval Mechanism",
+            "description": "Build or update the system to retrieve configuration for a given channel, supporting both specific and default configurations.",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement efficient queries and caching as needed to fetch channel-specific or default config, and expose retrieval via API or internal interfaces.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Modify Bot to Support Channel-Specific Configurations",
+            "description": "Update the bot's logic to utilize the new configuration retrieval mechanism and apply channel-specific settings during operation.",
+            "dependencies": [
+              3
+            ],
+            "details": "Refactor bot code to request and use channel-specific config, ensuring backward compatibility and correct behavior in all channels.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Implement and Test Default Configuration Fallback",
+            "description": "Ensure that the system correctly falls back to a default configuration when no channel-specific config is present, and thoroughly test this behavior.",
+            "dependencies": [
+              4
+            ],
+            "details": "Define default config, implement fallback logic, and write tests to verify correct application of defaults in all relevant scenarios.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Create Channel Management UI",
+        "description": "Develop the admin interface for managing channel configurations, including document set selection, LLM model selection, and configuration testing.",
+        "details": "1. Create `web/src/app/admin/bots/ChannelConfig.tsx`\n2. Implement UI to list all channels the bot is in\n3. Add interface for configuring document sets per channel\n4. Create LLM model selection dropdown per channel\n5. Implement configuration testing functionality\n6. Add validation to prevent errors\n7. Create API endpoints for saving configurations\n8. Implement real-time updates for configuration changes",
+        "testStrategy": "1. Test UI displays all channels correctly\n2. Verify configurations can be saved\n3. Confirm changes take effect immediately\n4. Test validation prevents invalid configurations\n5. Verify UI updates when configurations change",
+        "priority": "medium",
+        "dependencies": [
+          11
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design Admin UI Layout",
+            "description": "Create the overall layout for the admin UI, including navigation, content areas, and responsive design considerations.",
+            "dependencies": [],
+            "details": "Focus on multi-column interfaces, sidebar navigation, and clear module labeling for usability and efficiency.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Implement Channel Listing Feature",
+            "description": "Develop the UI and backend logic to display and manage a list of channels within the admin panel.",
+            "dependencies": [
+              1
+            ],
+            "details": "Ensure channels are easily accessible, filterable, and support CRUD operations as needed.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Configure Document Set Management",
+            "description": "Build UI components and backend endpoints for configuring and managing document sets associated with channels.",
+            "dependencies": [
+              2
+            ],
+            "details": "Allow admins to create, edit, and assign document sets to specific channels with logical field groupings.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Integrate Model Selection Functionality",
+            "description": "Add UI controls and backend support for selecting and configuring models per channel or document set.",
+            "dependencies": [
+              3
+            ],
+            "details": "Provide dropdowns or selectors for available models, with validation and clear feedback.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Develop Configuration Testing Tools",
+            "description": "Implement tools within the UI to test current configurations, including model and document set assignments.",
+            "dependencies": [
+              4
+            ],
+            "details": "Enable admins to run test queries and view results to verify correct setup before deployment.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Add Validation and Error Handling",
+            "description": "Integrate real-time validation for all forms and configuration steps, providing immediate feedback on errors.",
+            "dependencies": [
+              5
+            ],
+            "details": "Ensure all user inputs are validated both client-side and server-side, with clear error messages and guidance.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Define and Implement API Endpoints",
+            "description": "Design and build the necessary backend API endpoints to support channel listing, document set configuration, model selection, and testing.",
+            "dependencies": [],
+            "details": "Ensure endpoints are secure, well-documented, and support all required CRUD and testing operations.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Enable Real-Time Updates",
+            "description": "Implement real-time update mechanisms in the UI and backend to reflect changes instantly across all admin sessions.",
+            "dependencies": [],
+            "details": "Use technologies such as WebSockets or server-sent events to push updates for channel lists, configurations, and test results.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Optimize Docker for Production",
+        "description": "Create a production-ready Docker Compose configuration with health checks, resource limits, and proper logging setup.",
+        "details": "1. Create `deployment/docker_compose/docker-compose.prod.yml`\n2. Remove `web_server` service for production\n3. Add health checks for all services\n4. Configure resource limits (CPU, memory)\n5. Set up logging to persistent volumes\n6. Configure environment variables for production\n7. Optimize container settings for performance\n8. Add restart policies for services",
+        "testStrategy": "1. Verify production compose file works correctly\n2. Test health checks for all services\n3. Confirm memory limits are enforced\n4. Verify logs persist to volumes correctly\n5. Test restart policies work as expected",
+        "priority": "low",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Production Docker Compose File",
+            "description": "Draft a docker-compose.yml file tailored for production, ensuring versioning and modular service definitions.",
+            "dependencies": [],
+            "details": "Specify the Compose file version, define each service with clear roles, and ensure maintainability and scalability.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Remove Unnecessary Services",
+            "description": "Identify and remove any services from the Compose file that are not required in the production environment.",
+            "dependencies": [
+              1
+            ],
+            "details": "Audit the Compose file for development-only or obsolete services and eliminate them to reduce attack surface and resource usage.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Implement Health Checks",
+            "description": "Add healthcheck definitions for each critical service to enable Docker to monitor and manage container health.",
+            "dependencies": [
+              1
+            ],
+            "details": "Define healthcheck commands, intervals, and retries for each service to ensure reliability and automatic recovery.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Set Resource Limits",
+            "description": "Configure CPU and memory limits for each service to prevent resource exhaustion and ensure fair allocation.",
+            "dependencies": [
+              1
+            ],
+            "details": "Use the 'deploy.resources' section to specify limits and reservations for production workloads.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Configure Logging",
+            "description": "Set up logging drivers and options for each service to ensure logs are captured and managed appropriately.",
+            "dependencies": [
+              1
+            ],
+            "details": "Choose suitable logging drivers (e.g., json-file, syslog) and configure log rotation and retention policies.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Set Up Environment Configuration",
+            "description": "Externalize environment variables and secrets using .env files or Docker secrets for secure and flexible configuration.",
+            "dependencies": [
+              1
+            ],
+            "details": "Move sensitive and environment-specific values out of the Compose file, referencing them via environment variables or secrets.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Optimize Container Settings",
+            "description": "Review and adjust container settings for performance, security, and maintainability.",
+            "dependencies": [
+              1
+            ],
+            "details": "Apply best practices such as using minimal base images, removing unnecessary packages, and enabling read-only file systems where possible.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Define Restart Policies",
+            "description": "Specify restart policies for each service to ensure automatic recovery from failures.",
+            "dependencies": [
+              1
+            ],
+            "details": "Use the 'restart' or 'deploy.restart_policy' fields to define when and how containers should be restarted.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Set Up Monitoring and Observability",
+        "description": "Implement monitoring using Prometheus metrics, Grafana dashboards, and query performance tracking.",
+        "details": "1. Create `backend/onyx/server/metrics.py`\n2. Set up Prometheus metrics for key performance indicators\n3. Create `deployment/docker_compose/monitoring/` directory\n4. Configure Grafana dashboards for visualization\n5. Implement Slack bot analytics tracking\n6. Set up query performance monitoring\n7. Configure alerting for critical issues\n8. Implement log storage and analysis",
+        "testStrategy": "1. Verify metrics are exposed on /metrics endpoint\n2. Test Grafana dashboards show key metrics\n3. Confirm alerts are triggered correctly\n4. Verify query logs are stored properly\n5. Test analytics tracking works correctly",
+        "priority": "low",
+        "dependencies": [
+          13
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Metrics and Create Metrics File",
+            "description": "Identify key application and infrastructure metrics to monitor. Implement code or exporters to expose these metrics in a format compatible with Prometheus (e.g., via HTTP endpoint or file).",
+            "dependencies": [],
+            "details": "Work with development teams to ensure all relevant metrics are exposed. Document metric names, types, and labels.",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Set Up Prometheus Server",
+            "description": "Install and configure Prometheus to scrape metrics from defined targets, including the metrics file or endpoints created in the previous step.",
+            "dependencies": [
+              1
+            ],
+            "details": "Download Prometheus, create a prometheus.yml configuration file specifying scrape intervals and targets, and start the Prometheus server.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Configure Monitoring Directory Structure",
+            "description": "Establish a standardized directory structure for monitoring configurations, rules, and exporters to ensure maintainability and clarity.",
+            "dependencies": [
+              2
+            ],
+            "details": "Organize configuration files, exporters, and scripts in a version-controlled directory. Document the structure for team reference.",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Integrate Prometheus with Grafana",
+            "description": "Install Grafana and connect it to the Prometheus data source to enable visualization of collected metrics.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Configure Grafana to use Prometheus as a data source. Verify connectivity and data availability.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Develop Grafana Dashboards",
+            "description": "Create Grafana dashboards to visualize key metrics, including system health, application performance, and custom analytics.",
+            "dependencies": [
+              4
+            ],
+            "details": "Design and implement dashboards using Grafana’s visualization tools. Share and document dashboard URLs and configurations.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Implement Analytics Tracking",
+            "description": "Set up analytics tracking for user interactions and system events, ensuring relevant data is captured and exposed as metrics.",
+            "dependencies": [
+              1,
+              5
+            ],
+            "details": "Instrument code or use third-party tools to track analytics events. Expose these as Prometheus-compatible metrics for monitoring.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Configure Query Monitoring and Alerting",
+            "description": "Define Prometheus alerting rules and configure Alertmanager to notify stakeholders based on metric thresholds and query results.",
+            "dependencies": [
+              2,
+              5,
+              6
+            ],
+            "details": "Write Prometheus alerting rules (e.g., for high error rates or latency). Set up Alertmanager for notifications via email, Slack, etc.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Set Up Log Analysis Integration",
+            "description": "Integrate log analysis tools (e.g., Loki, ELK stack) with Prometheus and Grafana to correlate logs with metrics and alerts.",
+            "dependencies": [
+              3,
+              5,
+              7
+            ],
+            "details": "Configure log shippers and parsers. Create Grafana panels to visualize and correlate logs with metric data for comprehensive monitoring.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "Create AWS Infrastructure with Terraform",
+        "description": "Develop Terraform modules for GCP infrastructure to deploy SambaAI, including Compute Engine VM instances, Cloud SQL PostgreSQL, Memorystore Redis, Cloud Storage, and Secret Manager.",
+        "status": "pending",
+        "dependencies": [
+          13,
+          14
+        ],
+        "priority": "low",
+        "details": "1. Create `deployment/terraform/gcp/main.tf`\n2. Define Compute Engine VM instances (e2-standard-4 or e2-standard-8)\n3. Configure Cloud SQL PostgreSQL instance\n4. Set up Memorystore Redis\n5. Create Cloud Storage bucket for document storage\n6. Configure Secret Manager for sensitive data\n7. Set up networking and firewall rules\n8. Configure DNS for domain pointing to GCP external IP\n9. Define IAM roles and permissions\n10. Set up Let's Encrypt for SSL certificates\n11. Install Docker and dependencies\n12. Deploy SambaAI using Docker Compose\n13. Configure monitoring and logging",
+        "testStrategy": "1. Verify Terraform applies cleanly\n2. Test all services are healthy after deployment\n3. Confirm secrets are managed properly\n4. Verify Docker containers are running correctly\n5. Verify networking, DNS, and SSL are configured correctly\n6. Test HTTPS access to the SambaAI application\n7. Verify monitoring and logging are properly configured",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design Terraform Module Structure",
+            "description": "Define the overall structure for Terraform modules, including directory layout, naming conventions, and documentation standards.",
+            "dependencies": [],
+            "details": "Establish a consistent structure for all modules (e.g., variables.tf, main.tf, outputs.tf, versions.tf, README.md) and set naming/documentation guidelines to ensure maintainability and clarity.[3][5]",
+            "status": "pending"
+          },
+          {
+            "id": 2,
+            "title": "Implement Networking Module",
+            "description": "Create a Terraform module to provision VPC networks, subnets, routes, and firewall rules required for the GCP infrastructure.",
+            "dependencies": [
+              1
+            ],
+            "details": "Ensure the networking module encapsulates all networking resources and exposes outputs for use by dependent modules (e.g., subnet IDs, VPC ID). Configure firewall rules to allow HTTPS traffic.",
+            "status": "pending"
+          },
+          {
+            "id": 3,
+            "title": "Develop IAM Roles and Permissions Module",
+            "description": "Create a module to manage IAM roles, permissions, and service accounts needed by Compute Engine, Cloud SQL, Memorystore, and other GCP services.",
+            "dependencies": [
+              1
+            ],
+            "details": "Define least-privilege IAM roles and permissions, ensuring privilege boundaries are respected and outputs are available for other modules.[2][4]",
+            "status": "pending"
+          },
+          {
+            "id": 4,
+            "title": "Create Compute Engine Module",
+            "description": "Develop a module to provision Google Compute Engine VM instances for SambaAI Docker-based deployment, including instance configuration and startup scripts.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Parameterize the module for instance types (e2-standard-4 or e2-standard-8), disk size (500GB), and networking. Include startup scripts to install git, docker, and docker-compose. Ensure integration with IAM and networking modules.",
+            "status": "pending"
+          },
+          {
+            "id": 5,
+            "title": "Configure Cloud SQL Module",
+            "description": "Build a module to provision a Google Cloud SQL PostgreSQL instance, including networking configuration and security settings.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Allow configuration of instance size, storage, and networking. Ensure outputs for connection endpoint and credentials.",
+            "status": "pending"
+          },
+          {
+            "id": 6,
+            "title": "Set Up Memorystore Module",
+            "description": "Develop a module to provision Memorystore Redis instances, including networking configuration and security settings.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Parameterize for Redis version, node count, and networking. Output connection endpoints.",
+            "status": "pending"
+          },
+          {
+            "id": 7,
+            "title": "Provision Cloud Storage Module",
+            "description": "Create a module to provision Cloud Storage buckets for application storage, backups, or logging, with appropriate policies and encryption.",
+            "dependencies": [
+              3
+            ],
+            "details": "Support configuration of bucket policies, versioning, encryption, and lifecycle rules. Output bucket names and URLs.",
+            "status": "pending"
+          },
+          {
+            "id": 8,
+            "title": "Implement Secret Manager Module",
+            "description": "Develop a module to manage secrets in Google Secret Manager, including creation and access controls.",
+            "dependencies": [
+              3
+            ],
+            "details": "Allow creation of secrets for database credentials, API keys, etc., and ensure IAM roles have appropriate access.",
+            "status": "pending"
+          },
+          {
+            "id": 9,
+            "title": "Configure DNS and SSL",
+            "description": "Set up DNS configuration for domain pointing to GCP external IP and implement Let's Encrypt for SSL certificates.",
+            "dependencies": [
+              4
+            ],
+            "details": "Create Terraform resources to manage DNS records and automate Let's Encrypt certificate issuance and renewal. Ensure proper integration with Compute Engine instances.",
+            "status": "pending"
+          },
+          {
+            "id": 10,
+            "title": "Create Docker Deployment Configuration",
+            "description": "Develop configuration for Docker and Docker Compose deployment of SambaAI on Compute Engine instances.",
+            "dependencies": [
+              4
+            ],
+            "details": "Create templates for docker-compose.yml and related configuration files. Include setup for container orchestration, networking, and volume management.",
+            "status": "pending"
+          },
+          {
+            "id": 11,
+            "title": "Configure Monitoring and Logging",
+            "description": "Set up monitoring and logging for the SambaAI deployment on GCP.",
+            "dependencies": [
+              4,
+              10
+            ],
+            "details": "Implement Cloud Monitoring and Cloud Logging for the Compute Engine instances and SambaAI application. Configure alerts and dashboards for key metrics.",
+            "status": "pending"
+          },
+          {
+            "id": 12,
+            "title": "Create Deployment Documentation",
+            "description": "Document the deployment process for SambaAI on GCP using the Terraform modules.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "details": "Create comprehensive documentation covering the deployment process, configuration options, and troubleshooting steps for the SambaAI GCP deployment.",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "title": "Create Manual GCP Deployment Process",
+        "description": "Develop a step-by-step manual deployment process for SambaAI on Google Cloud Platform, including VM setup, networking configuration, and application deployment.",
+        "details": "1. Create GCP VM instance:\n   - Provision e2-standard-4 or e2-standard-8 instance\n   - Configure with 16GB RAM and 500GB SSD persistent disk\n   - Use Debian 11 or Ubuntu 22.04 LTS as the base OS\n   - Set appropriate region based on target users\n\n2. Configure networking and security:\n   - Allow HTTPS traffic (port 443) in firewall settings\n   - Create a static external IP address for the VM\n   - Configure DNS records to point domain to VM external IP\n   - Set up proper network tags for firewall rules\n\n3. Install dependencies on VM:\n   ```bash\n   # Update package lists\n   sudo apt update\n   \n   # Install Git\n   sudo apt install -y git\n   \n   # Install Docker\n   sudo apt install -y apt-transport-https ca-certificates curl software-properties-common\n   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\n   sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"\n   sudo apt update\n   sudo apt install -y docker-ce\n   \n   # Add current user to docker group\n   sudo usermod -aG docker $USER\n   \n   # Install Docker Compose\n   sudo curl -L \"https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose\n   sudo chmod +x /usr/local/bin/docker-compose\n   ```\n\n4. Clone and configure SambaAI:\n   ```bash\n   # Clone repository\n   git clone https://github.com/SambaAI/SambaAI.git\n   cd SambaAI/deployment/docker_compose\n   \n   # Copy and configure environment files\n   cp .env.example .env\n   cp .env.nginx.example .env.nginx\n   ```\n\n5. Configure environment files:\n   - In `.env.nginx`:\n     - Set `DOMAIN=yourdomain.com`\n     - Set `CERTBOT_EMAIL=admin@yourdomain.com`\n   - In `.env`:\n     - Configure database credentials\n     - Set API keys for LLM providers\n     - Configure Slack tokens\n     - Set other application-specific settings\n\n6. Set up SSL certificates:\n   ```bash\n   # Run the Let's Encrypt initialization script\n   sudo ./init-letsencrypt.sh\n   ```\n\n7. Start the application:\n   ```bash\n   # Start all services\n   docker-compose -f docker-compose.prod.yml up -d\n   ```\n\n8. Monitor deployment:\n   ```bash\n   # Check container status\n   docker-compose ps\n   \n   # View logs\n   docker-compose logs -f\n   ```\n\n9. Verify deployment:\n   - Access the application via HTTPS at your domain\n   - Test Slack bot functionality\n   - Verify document indexing works correctly\n   - Test search and retrieval functionality\n\n10. Document the deployment:\n    - Record all configuration settings\n    - Document any custom modifications\n    - Create backup procedures\n    - Document scaling considerations",
+        "testStrategy": "1. Verify VM provisioning:\n   - Confirm VM is running with correct specifications\n   - Verify disk space is properly allocated\n   - Check CPU and memory resources\n\n2. Test network configuration:\n   - Verify external IP is assigned correctly\n   - Confirm DNS records are resolving to the VM IP\n   - Test HTTPS connectivity to the server\n   - Verify firewall rules are correctly configured\n\n3. Validate dependency installation:\n   - Check Git version: `git --version`\n   - Verify Docker installation: `docker --version`\n   - Confirm Docker Compose installation: `docker-compose --version`\n   - Test Docker functionality: `docker run hello-world`\n\n4. Verify application deployment:\n   - Confirm all containers are running: `docker-compose ps`\n   - Check for any error messages in logs: `docker-compose logs`\n   - Verify database migrations completed successfully\n   - Confirm Redis is operational\n\n5. Test SSL configuration:\n   - Verify SSL certificate is valid and not expired\n   - Test HTTPS access to the application\n   - Check SSL rating using SSL Labs (should be A or A+)\n\n6. Validate application functionality:\n   - Test user login and authentication\n   - Verify document indexing works correctly\n   - Test search functionality with various queries\n   - Confirm Slack bot responds to mentions\n   - Test document retrieval and citation functionality\n\n7. Performance testing:\n   - Monitor resource usage during normal operation\n   - Test application under load to verify stability\n   - Check database query performance\n   - Monitor memory usage of containers\n\n8. Security verification:\n   - Verify all sensitive data is properly secured\n   - Confirm environment variables are correctly set\n   - Check for exposed ports that should be closed\n   - Verify Docker containers run with appropriate permissions",
+        "status": "pending",
+        "dependencies": [
+          1,
+          2,
+          13
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Provision and Configure GCP VM Instance",
+            "description": "Set up a Google Cloud Platform virtual machine with the required specifications and operating system for running SambaAI.",
+            "dependencies": [],
+            "details": "1. Create a new VM instance in GCP Console with e2-standard-4 or e2-standard-8 machine type\n2. Configure with 16GB RAM and 500GB SSD persistent disk\n3. Select Debian 11 or Ubuntu 22.04 LTS as the base OS\n4. Choose appropriate region based on target users' location\n5. Enable HTTP/HTTPS traffic during VM creation\n6. Reserve a static external IP address and assign it to the VM\n7. Set appropriate network tags for firewall rules",
+            "status": "pending",
+            "testStrategy": "Verify SSH access to the VM and confirm system specifications using commands like 'free -h' for memory and 'df -h' for disk space."
+          },
+          {
+            "id": 2,
+            "title": "Configure Networking and DNS",
+            "description": "Set up networking components including firewall rules, DNS configuration, and security settings to make the application accessible.",
+            "dependencies": [],
+            "details": "1. Configure GCP firewall rules to allow HTTPS traffic (port 443)\n2. Set up additional firewall rules as needed for application functionality\n3. Configure DNS records with your domain registrar to point your domain to the VM's static IP\n4. Verify DNS propagation using tools like 'dig' or 'nslookup'\n5. Document all network settings and IP addresses for future reference",
+            "status": "pending",
+            "testStrategy": "Test DNS resolution using 'dig' or 'nslookup' commands. Verify connectivity to ports 443 and 80 using 'telnet' or 'curl'."
+          },
+          {
+            "id": 3,
+            "title": "Install System Dependencies and Docker",
+            "description": "Install all required system packages, Docker, and Docker Compose on the VM to prepare for application deployment.",
+            "dependencies": [],
+            "details": "1. SSH into the VM\n2. Update package lists with 'sudo apt update'\n3. Install Git with 'sudo apt install -y git'\n4. Install Docker prerequisites with 'sudo apt install -y apt-transport-https ca-certificates curl software-properties-common'\n5. Add Docker's official GPG key and repository\n6. Install Docker with 'sudo apt install -y docker-ce'\n7. Add current user to docker group with 'sudo usermod -aG docker $USER'\n8. Install Docker Compose with the curl command provided\n9. Verify installations with 'docker --version' and 'docker-compose --version'",
+            "status": "pending",
+            "testStrategy": "Verify Docker is running with 'sudo systemctl status docker'. Test Docker functionality by running a simple container like 'docker run hello-world'."
+          },
+          {
+            "id": 4,
+            "title": "Deploy SambaAI Application",
+            "description": "Clone the SambaAI repository, configure environment files, set up SSL certificates, and start the application using Docker Compose.",
+            "dependencies": [],
+            "details": "1. Clone the SambaAI repository with 'git clone https://github.com/SambaAI/SambaAI.git'\n2. Navigate to the deployment directory with 'cd SambaAI/deployment/docker_compose'\n3. Copy example environment files with 'cp .env.example .env' and 'cp .env.nginx.example .env.nginx'\n4. Edit .env.nginx to set your domain and email for SSL certificates\n5. Edit .env to configure database credentials, API keys, Slack tokens, and other application settings\n6. Run the Let's Encrypt initialization script with 'sudo ./init-letsencrypt.sh'\n7. Start the application with 'docker-compose -f docker-compose.prod.yml up -d'\n8. Check container status with 'docker-compose ps'",
+            "status": "pending",
+            "testStrategy": "Monitor container logs with 'docker-compose logs -f'. Check that all containers are in the 'Up' state with 'docker-compose ps'."
+          },
+          {
+            "id": 5,
+            "title": "Verify Deployment and Create Documentation",
+            "description": "Test the deployed application, verify all functionality works correctly, and create comprehensive documentation for the deployment process.",
+            "dependencies": [],
+            "details": "1. Access the application via HTTPS at your domain in a web browser\n2. Test Slack bot functionality by sending test messages\n3. Verify document indexing by uploading test documents\n4. Test search and retrieval functionality with various queries\n5. Create detailed documentation including:\n   - All configuration settings used\n   - Any custom modifications made\n   - Backup procedures\n   - Scaling considerations\n   - Troubleshooting steps for common issues\n6. Store documentation in a secure, accessible location\n7. Create a monitoring plan for the production deployment",
+            "status": "pending",
+            "testStrategy": "Create a test checklist covering all critical application functions. Perform end-to-end testing of the entire application workflow. Have another team member review the documentation for completeness."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-06-19T22:28:01.489Z",
+      "updated": "2025-06-19T22:36:06.975Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

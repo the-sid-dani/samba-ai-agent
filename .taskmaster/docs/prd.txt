@@ -1,0 +1,629 @@
+# SambaAI: Slack-First Knowledge Assistant
+## Product Requirements Document for AI-Driven Development
+
+### 1. PROJECT OVERVIEW
+
+**Product Name:** SambaAI  
+**Base Platform:** Fork of Onyx v0.29.1  
+**Primary Function:** Slack bot that provides instant answers from Confluence and Google Drive  
+**Target Users:** SambaTv engineering, product, and support teams  
+**Development Approach:** AI-driven with task-master.dev
+
+### 2. TECHNICAL FOUNDATION
+
+#### 2.1 Repository Structure
+```
+sambaai/
+├── backend/
+│   ├── onyx/
+│   │   ├── server/          # API endpoints
+│   │   ├── slack/           # Slack bot logic
+│   │   ├── connectors/      # Confluence/Drive
+│   │   └── document_index/  # Vespa integration
+├── deployment/
+│   └── docker_compose/      # Local dev stack
+├── .env                     # Configuration
+└── scripts/                 # Setup scripts
+```
+
+#### 2.2 Core Services
+- **api_server**: Main Onyx API (port 8080)
+- **background**: Document processing worker
+- **slack_bot**: WebSocket listener
+- **relational_db**: PostgreSQL
+- **index**: Vespa vector database
+- **cache**: Redis
+- **model_server**: Embeddings (port 9000)
+- **nginx**: Reverse proxy (port 3000)
+
+### 3. PHASE 0: REPOSITORY SETUP
+
+#### 3.1 Fork and Rebrand
+**Task:** Create SambaAI from Onyx fork
+**Files to modify:**
+- All references to "Onyx" → "SambaAI"
+- All references to "DanswerBot" → "SambaAI"
+- Logo files in `web/public/`
+- Docker image names in `docker-compose.dev.yml`
+- Python package names in `backend/setup.py`
+
+**Acceptance Criteria:**
+- [ ] Repository forked as `sambaai`
+- [ ] Global find/replace completed
+- [ ] Docker images build successfully
+- [ ] No "Onyx" references remain
+
+#### 3.2 Initial Configuration
+**Task:** Set up base environment
+**Create file:** `deployment/docker_compose/.env`
+```env
+# Core Settings
+AUTH_TYPE=disabled
+LOG_LEVEL=info
+POSTGRES_PASSWORD=sambaai123
+SECRET_KEY=sambaai-secret-key-change-in-prod
+
+# Model Configuration
+GEN_AI_MODEL_PROVIDER=litellm
+GEN_AI_MODEL_VERSION=claude-3-sonnet-20240229
+FAST_GEN_AI_MODEL_VERSION=claude-3-haiku-20240307
+GEN_AI_API_KEY=sk-ant-xxx
+
+# Slack Configuration (Phase 1)
+DANSWER_BOT_SLACK_APP_TOKEN=xapp-xxx
+DANSWER_BOT_SLACK_BOT_TOKEN=xoxb-xxx
+```
+
+**Acceptance Criteria:**
+- [ ] .env file created with all variables
+- [ ] Docker compose starts without errors
+- [ ] Can access http://localhost:3000
+- [ ] Database migrations complete
+
+### 4. PHASE 1: SLACK BOT CORE
+
+#### 4.1 Slack App Creation
+**Task:** Configure Slack application
+**Platform:** https://api.slack.com/apps
+**Manifest to use:**
+```yaml
+display_information:
+  name: SambaAI
+  description: Your knowledge assistant
+  background_color: "#FF6B6B"
+features:
+  bot_user:
+    display_name: SambaAI
+    always_online: true
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - channels:read
+      - chat:write
+      - groups:history
+      - groups:read
+      - im:history
+      - users:read
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_mention
+      - message.channels
+      - message.groups
+      - message.im
+  interactivity:
+    is_enabled: true
+  socket_mode_enabled: true
+```
+
+**Acceptance Criteria:**
+- [ ] Slack app created with manifest
+- [ ] App-level token generated with `connections:write`
+- [ ] Bot token obtained
+- [ ] Tokens added to .env file
+
+#### 4.2 Bot Implementation
+**Task:** Implement core bot functionality
+**File:** `backend/onyx/slack/bot.py`
+**Key functions:**
+```python
+async def handle_mention(event: dict) -> None:
+    """Process @sambaai mentions"""
+    # Extract query from message
+    # Call retrieval pipeline
+    # Format response with citations
+    # Reply in thread
+
+async def format_response(answer: str, sources: List[Source]) -> dict:
+    """Format answer with citations"""
+    # Add emoji based on query type
+    # Format main content
+    # Append source links
+    # Add metadata footer
+```
+
+**Acceptance Criteria:**
+- [ ] Bot responds to @sambaai mentions
+- [ ] Responses include citations
+- [ ] Replies in thread
+- [ ] Handles errors gracefully
+
+### 5. PHASE 2: CONFLUENCE CONNECTOR
+
+#### 5.1 Confluence Authentication
+**Task:** Set up Confluence API access
+**File:** `backend/onyx/connectors/confluence/connector.py`
+**Configuration:**
+- API Token authentication
+- Base URL: `https://sambatv.atlassian.net/wiki`
+- Cloud instance settings
+
+**Acceptance Criteria:**
+- [ ] API token generated in Atlassian
+- [ ] Connector authenticates successfully
+- [ ] Can list accessible spaces
+- [ ] Token stored securely
+
+#### 5.2 Document Ingestion
+**Task:** Implement Confluence sync
+**Files to modify:**
+- `backend/onyx/connectors/confluence/connector.py`
+- `backend/onyx/background/indexing/job_supervisor.py`
+
+**Features:**
+- Initial full sync of selected spaces
+- Incremental updates every 10 minutes
+- Page content + comments extraction
+- Metadata preservation (author, date, space)
+
+**Acceptance Criteria:**
+- [ ] Full sync completes for test space
+- [ ] Documents indexed in Vespa
+- [ ] Incremental sync detects changes
+- [ ] Search returns Confluence results
+
+### 6. PHASE 3: GOOGLE DRIVE CONNECTOR
+
+#### 6.1 Service Account Setup
+**Task:** Configure Google Drive access
+**Steps:**
+1. Create Google Cloud Project
+2. Enable APIs: Drive, Admin SDK, Docs, Sheets
+3. Create service account with domain delegation
+4. Download credentials JSON
+
+**File:** `backend/onyx/connectors/google_drive/connector.py`
+
+**Acceptance Criteria:**
+- [ ] Service account created
+- [ ] Domain-wide delegation configured
+- [ ] APIs enabled
+- [ ] Credentials file added
+
+#### 6.2 Drive Document Processing
+**Task:** Implement Drive sync
+**Supported types:**
+- Google Docs → Markdown
+- Google Sheets → Structured data
+- PDFs → Text extraction
+- Google Slides → Content + notes
+
+**Features:**
+- Folder-based selection
+- Permission mirroring
+- Real-time updates via push notifications
+
+**Acceptance Criteria:**
+- [ ] Test folder syncs successfully
+- [ ] All document types processed
+- [ ] Permissions respected
+- [ ] Search includes Drive results
+
+### 7. PHASE 4: RETRIEVAL & LLM
+
+#### 7.1 Vector Search Configuration
+**Task:** Optimize Vespa for tech docs
+**File:** `backend/onyx/configs/app_configs.py`
+```python
+HYBRID_SEARCH_WEIGHT_MODIFIER = 0.7  # Favor semantic
+CHUNK_SIZE = 512
+MINI_CHUNK_SIZE = 128
+TOP_K_CHUNKS = 10
+```
+
+**Acceptance Criteria:**
+- [ ] Vespa schema updated
+- [ ] Hybrid search configured
+- [ ] Reranking implemented
+- [ ] Sub-second query times
+
+#### 7.2 LLM Integration
+**Task:** Configure Claude via LiteLLM
+**File:** `backend/onyx/llm/factory.py`
+**System prompt:**
+```
+You are SambaAI, a helpful assistant for SambaTv employees.
+You answer questions based on internal documentation.
+Always cite your sources with document titles and links.
+Be concise but thorough. Use technical language when appropriate.
+```
+
+**Acceptance Criteria:**
+- [ ] LLM responds to queries
+- [ ] Citations included
+- [ ] Appropriate tone/style
+- [ ] Token limits respected
+
+### 8. PHASE 5: CHANNEL CONFIGURATION
+
+#### 8.1 Channel-to-DocSet Mapping
+**Task:** Implement channel scoping
+**Database table:** `channel_config`
+```sql
+CREATE TABLE channel_config (
+    channel_id VARCHAR PRIMARY KEY,
+    channel_name VARCHAR,
+    doc_scopes JSONB,  -- ["engineering", "product"]
+    llm_model VARCHAR DEFAULT 'claude-3-sonnet',
+    max_tokens INT DEFAULT 500
+);
+```
+
+**UI Location:** Admin Dashboard → Bots → Channel Config
+
+**Acceptance Criteria:**
+- [ ] Table created and migrated
+- [ ] UI allows scope selection
+- [ ] Bot filters by channel scope
+- [ ] Different channels get different docs
+
+#### 8.2 Admin Interface
+**Task:** Create channel management UI
+**File:** `web/src/app/admin/bots/ChannelConfig.tsx`
+**Features:**
+- List all channels bot is in
+- Configure doc sets per channel
+- Set LLM model per channel
+- Test configuration
+
+**Acceptance Criteria:**
+- [ ] UI displays all channels
+- [ ] Can save configurations
+- [ ] Changes take effect immediately
+- [ ] Validation prevents errors
+
+### 9. PHASE 6: PRODUCTION PREP
+
+#### 9.1 Docker Optimization
+**Task:** Streamline for production
+**File:** `deployment/docker_compose/docker-compose.prod.yml`
+- Remove `web_server` service
+- Add health checks
+- Configure resource limits
+- Set up logging
+
+**Acceptance Criteria:**
+- [ ] Production compose file created
+- [ ] All services have health checks
+- [ ] Memory limits set
+- [ ] Logs persist to volumes
+
+#### 9.2 Monitoring Setup
+**Task:** Add observability
+**Components:**
+- Prometheus metrics
+- Grafana dashboards
+- Slack bot analytics
+- Query performance tracking
+
+**Files:**
+- `backend/onyx/server/metrics.py`
+- `deployment/docker_compose/monitoring/`
+
+**Acceptance Criteria:**
+- [ ] Metrics exposed on /metrics
+- [ ] Dashboards show key metrics
+- [ ] Alerts configured
+- [ ] Query logs stored
+
+### 10. PHASE 7: GCP DEPLOYMENT
+
+#### 10.1 GCP Infrastructure
+**Task:** Create Terraform modules
+**File:** `deployment/terraform/gcp/main.tf`
+**Resources:**
+```hcl
+# GKE Autopilot Cluster
+resource "google_container_cluster" "sambaai" {
+  name     = "sambaai-cluster"
+  location = "us-central1"
+  
+  # Autopilot mode for simplified management
+  enable_autopilot = true
+  
+  network    = google_compute_network.vpc.id
+  subnetwork = google_compute_subnetwork.subnet.id
+}
+
+# Cloud SQL PostgreSQL
+resource "google_sql_database_instance" "postgres" {
+  name             = "sambaai-postgres"
+  database_version = "POSTGRES_14"
+  region          = "us-central1"
+  
+  settings {
+    tier = "db-g1-small"
+    
+    backup_configuration {
+      enabled = true
+      start_time = "03:00"
+    }
+    
+    database_flags {
+      name  = "max_connections"
+      value = "200"
+    }
+  }
+}
+
+# Memorystore Redis
+resource "google_redis_instance" "cache" {
+  name           = "sambaai-cache"
+  tier           = "STANDARD_HA"
+  memory_size_gb = 5
+  region         = "us-central1"
+  
+  redis_configs = {
+    maxmemory-policy = "allkeys-lru"
+  }
+}
+
+# Cloud Storage for documents
+resource "google_storage_bucket" "documents" {
+  name          = "sambaai-documents"
+  location      = "US"
+  storage_class = "STANDARD"
+  
+  lifecycle_rule {
+    condition {
+      age = 90
+    }
+    action {
+      type = "SetStorageClass"
+      storage_class = "NEARLINE"
+    }
+  }
+}
+
+# Secret Manager
+resource "google_secret_manager_secret" "api_keys" {
+  secret_id = "sambaai-api-keys"
+  
+  replication {
+    automatic = true
+  }
+}
+```
+
+**Acceptance Criteria:**
+- [ ] Terraform applies cleanly
+- [ ] GKE cluster created
+- [ ] Cloud SQL accessible
+- [ ] Redis instance running
+- [ ] Secrets stored securely
+
+#### 10.2 GKE Deployment
+**Task:** Kubernetes manifests
+**Files:** `deployment/kubernetes/gcp/`
+```yaml
+# sambaai-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sambaai-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sambaai-api
+  template:
+    metadata:
+      labels:
+        app: sambaai-api
+    spec:
+      containers:
+      - name: api-server
+        image: gcr.io/sambaai-project/sambaai-api:latest
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: sambaai-secrets
+              key: database-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sambaai-api-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: sambaai-api
+  ports:
+  - port: 80
+    targetPort: 8080
+```
+
+**Acceptance Criteria:**
+- [ ] All services deployed
+- [ ] Pods running healthy
+- [ ] Load balancer accessible
+- [ ] Ingress configured
+
+#### 10.3 CI/CD Pipeline
+**Task:** Cloud Build configuration
+**File:** `cloudbuild.yaml`
+```yaml
+steps:
+  # Run tests
+  - name: 'python:3.11'
+    entrypoint: 'bash'
+    args: ['-c', 'cd backend && pip install -r requirements.txt && pytest']
+  
+  # Build Docker images
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/sambaai-api:$COMMIT_SHA', '-f', 'backend/Dockerfile', 'backend']
+  
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/sambaai-api:$COMMIT_SHA']
+  
+  # Deploy to GKE
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    args:
+    - run
+    - --filename=deployment/kubernetes/gcp/
+    - --image=gcr.io/$PROJECT_ID/sambaai-api:$COMMIT_SHA
+    - --cluster=sambaai-cluster
+    - --location=us-central1
+
+timeout: '30m'
+```
+
+**Acceptance Criteria:**
+- [ ] Build triggers on merge
+- [ ] Images pushed to GCR
+- [ ] Automatic deployment
+- [ ] Rollback capability
+
+#### 10.4 GCP-Specific Configuration
+**Task:** Environment setup for GCP
+**Update file:** `deployment/docker_compose/.env.prod`
+```env
+# GCP-specific settings
+GOOGLE_CLOUD_PROJECT=sambaai-project
+CLOUD_SQL_CONNECTION_NAME=sambaai-project:us-central1:sambaai-postgres
+REDIS_HOST=10.0.0.3  # Private IP from Memorystore
+
+# Use Google Secret Manager
+USE_GOOGLE_SECRET_MANAGER=true
+SECRET_MANAGER_PROJECT=sambaai-project
+
+# Cloud Storage
+DOCUMENT_STORAGE_BACKEND=gcs
+GCS_BUCKET_NAME=sambaai-documents
+
+# Monitoring
+ENABLE_CLOUD_LOGGING=true
+ENABLE_CLOUD_TRACE=true
+ENABLE_CLOUD_PROFILER=true
+```
+
+**Acceptance Criteria:**
+- [ ] Cloud SQL proxy configured
+- [ ] Secret Manager integrated
+- [ ] Cloud Storage connected
+- [ ] Monitoring enabled
+
+### 11. NON-FUNCTIONAL REQUIREMENTS
+
+#### 11.1 Performance
+- **Query latency:** < 2 seconds p95
+- **Throughput:** 100 QPS minimum
+- **Indexing speed:** 1000 docs/minute
+- **Cache hit rate:** > 60%
+
+#### 11.2 Security
+- **Secrets:** Google Secret Manager only
+- **Network:** Private GKE with Cloud Armor
+- **Auth:** Workload Identity for service auth
+- **Audit:** Cloud Logging for all queries
+
+#### 11.3 Reliability
+- **Uptime:** 99.9% SLA
+- **Recovery:** < 5 minute RTO
+- **Backups:** Automated Cloud SQL backups
+- **Monitoring:** Cloud Monitoring alerts
+
+### 12. TESTING REQUIREMENTS
+
+#### 12.1 Unit Tests
+**Coverage target:** 80%
+**Key areas:**
+- Slack message parsing
+- Document chunking
+- Search ranking
+- Citation formatting
+
+#### 12.2 Integration Tests
+- Slack bot event handling
+- Connector authentication
+- End-to-end query flow
+- Channel configuration
+
+#### 12.3 Load Tests
+- 100 concurrent users
+- 1000 QPS sustained
+- 1M documents indexed
+- Memory usage stable
+
+### 13. DOCUMENTATION REQUIREMENTS
+
+#### 13.1 User Documentation
+- Slack bot usage guide
+- Admin configuration guide
+- Troubleshooting guide
+- FAQ document
+
+#### 13.2 Technical Documentation
+- Architecture diagrams
+- API documentation
+- Deployment guide
+- Runbook for operations
+
+### 14. SUCCESS CRITERIA
+
+#### 14.1 MVP Success (Phase 1-4)
+- [ ] Bot responds in #engineering channel
+- [ ] Confluence documents searchable
+- [ ] < 5 second response time
+- [ ] 90% positive feedback
+
+#### 14.2 Full Launch (Phase 5-7)
+- [ ] 20+ channels configured
+- [ ] 200+ daily active users
+- [ ] 99.9% uptime achieved
+- [ ] < 2 second p95 latency
+
+### 15. TASK DEPENDENCIES
+
+```mermaid
+graph TD
+    A[Phase 0: Fork] --> B[Phase 1: Slack Bot]
+    B --> C[Phase 2: Confluence]
+    B --> D[Phase 3: Drive]
+    C --> E[Phase 4: Retrieval]
+    D --> E
+    E --> F[Phase 5: Channels]
+    F --> G[Phase 6: Production]
+    G --> H[Phase 7: GCP Deploy]
+```
+
+### 16. RISK MITIGATION
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Slack rate limits | High | Implement exponential backoff |
+| Connector auth expiry | Medium | Automated token refresh |
+| Vespa memory usage | High | Document count limits |
+| LLM costs | Medium | Per-channel model selection |
+| GCP quota limits | Medium | Request quota increases early |

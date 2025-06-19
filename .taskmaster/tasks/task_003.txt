@@ -1,0 +1,52 @@
+# Task ID: 3
+# Title: Create Slack Application
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Configure a new Slack application using the provided manifest, generate the necessary tokens, and update the environment configuration with the real tokens.
+# Details:
+1. Go to https://api.slack.com/apps
+2. Create a new app using the provided YAML manifest
+3. Enable Socket Mode and generate an app-level token with `connections:write` scope
+4. Install the app to the workspace to obtain the bot token
+5. Update the .env file with the real tokens:
+   - DANSWER_BOT_SLACK_APP_TOKEN=xapp-... (real token)
+   - DANSWER_BOT_SLACK_BOT_TOKEN=xoxb-... (real token)
+
+# Test Strategy:
+1. Verify the Slack app is created with the correct name and description
+2. Confirm all required scopes are enabled
+3. Test that the app-level token has the connections:write scope
+4. Verify the bot token has all the necessary permissions
+
+# Subtasks:
+## 1. Create a New Slack App [pending]
+### Dependencies: None
+### Description: Initiate the creation of a new Slack app in the Slack API dashboard, selecting the appropriate workspace.
+### Details:
+Navigate to the Slack API dashboard, click to create a new app, and choose the development workspace where the app will be installed.[2]
+
+## 2. Import and Configure the App Manifest [pending]
+### Dependencies: 3.1
+### Description: Import the app manifest file and configure the app's name, description, scopes, functions, and workflows.
+### Details:
+Choose to create the app from a manifest, paste the manifest configuration, and ensure all required fields (name, description, botScopes, functions, workflows) are set as needed.[2][3][5]
+
+## 3. Enable Socket Mode [pending]
+### Dependencies: 3.2
+### Description: Enable Socket Mode for the Slack app to allow real-time communication via websockets.
+### Details:
+In the app settings, navigate to the Socket Mode section and enable it to allow the app to receive events over websockets.
+
+## 4. Generate and Retrieve Required Tokens [pending]
+### Dependencies: 3.3
+### Description: Generate and securely retrieve the necessary tokens (such as Bot User OAuth Token and App-Level Token) for the app.
+### Details:
+In the OAuth & Permissions and Basic Information sections, generate and copy the Bot User OAuth Token and App-Level Token (with connections:write scope for Socket Mode).
+
+## 5. Update Environment Configuration [pending]
+### Dependencies: 3.4
+### Description: Update the local or deployment environment configuration with the generated tokens and relevant app settings.
+### Details:
+Add the retrieved tokens and any other required configuration values to the environment variables or configuration files used by the app.
+

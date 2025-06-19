@@ -1,0 +1,53 @@
+# Task ID: 2
+# Title: Configure Base Environment
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Set up the initial environment configuration by creating the necessary .env file with core settings, model configuration, and placeholders for Slack tokens.
+# Details:
+1. Create `deployment/docker_compose/.env` file
+2. Add core settings:
+   - AUTH_TYPE=disabled
+   - LOG_LEVEL=info
+   - POSTGRES_PASSWORD=sambaai123
+   - SECRET_KEY=sambaai-secret-key-change-in-prod
+3. Add model configuration:
+   - GEN_AI_MODEL_PROVIDER=litellm
+   - GEN_AI_MODEL_VERSION=claude-3-sonnet-20240229
+   - FAST_GEN_AI_MODEL_VERSION=claude-3-haiku-20240307
+   - GEN_AI_API_KEY=sk-ant-xxx (placeholder)
+4. Add Slack configuration placeholders:
+   - DANSWER_BOT_SLACK_APP_TOKEN=xapp-xxx
+   - DANSWER_BOT_SLACK_BOT_TOKEN=xoxb-xxx
+
+# Test Strategy:
+1. Verify .env file is created with all required variables
+2. Run docker-compose to ensure it starts without errors
+3. Access http://localhost:3000 to confirm the application loads
+4. Check database migrations complete successfully
+
+# Subtasks:
+## 1. Create the .env File [pending]
+### Dependencies: None
+### Description: Generate a new .env file in the project's root directory to store environment variables securely.
+### Details:
+Use a code editor or terminal command (e.g., `touch .env`) to create the file. Ensure the file is not committed to version control by updating .gitignore if necessary.
+
+## 2. Add Core Settings to .env [pending]
+### Dependencies: 2.1
+### Description: Insert placeholders for essential core configuration variables in the .env file.
+### Details:
+Define variables such as APP_ENV, PORT, and DATABASE_URL with clear, descriptive names. Leave values blank or provide example values as needed.
+
+## 3. Add Model and Slack Configuration Placeholders [pending]
+### Dependencies: 2.2
+### Description: Include placeholders for model-related and Slack integration settings in the .env file.
+### Details:
+Add variables like MODEL_API_KEY, MODEL_ENDPOINT, SLACK_BOT_TOKEN, and SLACK_SIGNING_SECRET, following naming conventions and providing comments or documentation as appropriate.
+
+## 4. Validate Environment Setup [pending]
+### Dependencies: 2.3
+### Description: Check that all required environment variables are present and correctly formatted in the .env file.
+### Details:
+Review the .env file for completeness, consistency, and adherence to best practices. Optionally, run a script or use a library to validate the presence and format of each variable.
+

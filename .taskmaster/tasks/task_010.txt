@@ -1,0 +1,72 @@
+# Task ID: 10
+# Title: Configure Claude LLM Integration
+# Status: pending
+# Dependencies: 9
+# Priority: high
+# Description: Set up the LLM integration using Claude via LiteLLM, including system prompt configuration, citation handling, and token limit management.
+# Details:
+1. Modify `backend/onyx/llm/factory.py`
+2. Configure LiteLLM to use Claude models
+3. Set up system prompt:
+```
+You are SambaAI, a helpful assistant for SambaTv employees.
+You answer questions based on internal documentation.
+Always cite your sources with document titles and links.
+Be concise but thorough. Use technical language when appropriate.
+```
+4. Implement citation handling in responses
+5. Configure token limits and truncation
+6. Set up fallback to smaller models when needed
+7. Implement caching for common queries
+
+# Test Strategy:
+1. Test LLM responses to various queries
+2. Verify citations are included correctly
+3. Check that tone and style are appropriate
+4. Test token limits are respected
+5. Measure response times
+6. Verify caching improves performance for repeated queries
+
+# Subtasks:
+## 1. Factory Modification [pending]
+### Dependencies: None
+### Description: Update or extend the factory pattern to support new LLM integrations, prompt engineering hooks, and modular backend logic.
+### Details:
+Refactor the existing factory code to allow dynamic selection and instantiation of LLM providers, ensuring compatibility with LiteLLM and future extensibility.
+
+## 2. LiteLLM Configuration Setup [pending]
+### Dependencies: 10.1
+### Description: Configure LiteLLM with model-specific parameters, API keys, and deployment settings using a config.yaml file.
+### Details:
+Create and validate a config.yaml file specifying model endpoints, authentication, and performance parameters. Ensure the configuration supports multiple models and fallback logic as needed[1][2][3].
+
+## 3. System Prompt Setup [pending]
+### Dependencies: 10.2
+### Description: Design and implement system prompt templates and injection logic for consistent prompt engineering across LLM calls.
+### Details:
+Develop a mechanism to standardize and inject system prompts, supporting both static and dynamic prompt components for various use cases.
+
+## 4. Citation Handling Logic [pending]
+### Dependencies: 10.3
+### Description: Implement logic to extract, format, and attach citations to LLM outputs, ensuring traceability and compliance.
+### Details:
+Develop middleware or post-processing steps to parse model outputs, identify citation markers, and map them to source metadata for downstream consumption.
+
+## 5. Token Management [pending]
+### Dependencies: 10.4
+### Description: Integrate token counting, limits, and cost tracking for LLM requests and responses.
+### Details:
+Implement logic to monitor token usage per request, enforce max token limits, and track usage for cost analysis and alerting[1][2].
+
+## 6. Fallback Logic Implementation [pending]
+### Dependencies: 10.5
+### Description: Develop and integrate fallback mechanisms to switch to alternative models or endpoints upon failure or timeout.
+### Details:
+Configure LiteLLM and the factory to support automatic failover, retry strategies, and error handling to maximize reliability[3].
+
+## 7. Caching Implementation [pending]
+### Dependencies: None
+### Description: Implement caching for LLM responses to optimize performance and reduce redundant calls.
+### Details:
+Integrate a caching layer (e.g., Redis) to store and retrieve LLM outputs based on prompt and parameters, ensuring cache invalidation and consistency with configuration best practices[1].
+

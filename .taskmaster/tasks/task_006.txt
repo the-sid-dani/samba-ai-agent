@@ -1,0 +1,73 @@
+# Task ID: 6
+# Title: Implement Confluence Document Ingestion
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: Develop the Confluence sync functionality to perform initial full sync and incremental updates of selected spaces, extracting page content, comments, and metadata.
+# Details:
+1. Modify `backend/onyx/connectors/confluence/connector.py` and `backend/onyx/background/indexing/job_supervisor.py`
+2. Implement full sync functionality for selected Confluence spaces
+3. Set up incremental updates to run every 10 minutes
+4. Extract page content, comments, and attachments
+5. Preserve metadata including author, date, and space
+6. Implement chunking strategy for large pages
+7. Add configuration for space selection
+8. Set up proper error handling and retry logic
+
+# Test Strategy:
+1. Test full sync with a test Confluence space
+2. Verify documents are properly indexed in Vespa
+3. Test incremental sync by making changes to Confluence pages
+4. Confirm search returns Confluence results
+5. Verify metadata is preserved correctly
+6. Test error handling with invalid spaces
+
+# Subtasks:
+## 1. Update Connector Logic [pending]
+### Dependencies: None
+### Description: Revise and enhance the connector to support new data sources, improved extraction, and compatibility with updated job supervisor logic.
+### Details:
+Ensure the connector can handle both full and incremental syncs, extract content and metadata, and interface with error handling mechanisms.
+
+## 2. Update Job Supervisor [pending]
+### Dependencies: 6.1
+### Description: Modify the job supervisor to orchestrate sync operations, manage task scheduling, and monitor job statuses.
+### Details:
+Integrate with updated connector logic and ensure robust tracking of sync jobs, including error reporting and recovery.
+
+## 3. Implement Full Sync Functionality [pending]
+### Dependencies: 6.2
+### Description: Develop logic to perform a complete data sync from source to destination, ensuring all content and metadata are ingested.
+### Details:
+Handle large data volumes efficiently and ensure data integrity throughout the process.
+
+## 4. Implement Incremental Sync Logic [pending]
+### Dependencies: 6.3
+### Description: Create mechanisms to detect and ingest only new or changed data since the last sync, minimizing resource usage.
+### Details:
+Ensure incremental syncs preserve consistency and handle edge cases such as deletions or updates.
+
+## 5. Content Extraction Module [pending]
+### Dependencies: 6.4
+### Description: Develop a module to extract relevant content from ingested data, preparing it for downstream processing.
+### Details:
+Support various data formats and ensure extracted content is structured for chunking and storage.
+
+## 6. Metadata Preservation [pending]
+### Dependencies: 6.5
+### Description: Ensure all relevant metadata is captured and stored alongside content during both full and incremental syncs.
+### Details:
+Design data models and storage strategies to maintain metadata integrity and accessibility.
+
+## 7. Chunking and Space Selection [pending]
+### Dependencies: None
+### Description: Implement logic to divide extracted content into manageable chunks and select appropriate storage spaces.
+### Details:
+Optimize chunk sizes for processing and retrieval, and ensure space selection aligns with data governance policies.
+
+## 8. Error Handling and Recovery [pending]
+### Dependencies: None
+### Description: Develop comprehensive error detection, logging, and recovery mechanisms across all pipeline stages.
+### Details:
+Ensure the system can gracefully handle failures, retry operations, and provide actionable error reports.
+

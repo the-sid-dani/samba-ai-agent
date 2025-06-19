@@ -1,0 +1,133 @@
+{
+	"meta": {
+		"generatedAt": "2025-06-19T22:29:18.250Z",
+		"tasksAnalyzed": 15,
+		"totalTasks": 15,
+		"analysisCount": 15,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Fork and Rebrand Onyx Repository",
+			"complexityScore": 5,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break down the rebranding process into subtasks for forking, global search/replace, logo updates, Docker image renaming, Python package renaming, verification of all references, and build/test validation.",
+			"reasoning": "This task involves coordinated changes across code, assets, and configuration files. While each step is straightforward, the breadth of affected components and the need for thorough verification increases complexity. Each major step should be a subtask to ensure nothing is missed."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Configure Base Environment",
+			"complexityScore": 3,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand into subtasks for creating the .env file, adding core settings, adding model and Slack configuration placeholders, and validating the environment setup.",
+			"reasoning": "This is a standard environment setup with clear, sequential steps. Complexity is low, but each configuration area (core, model, Slack) and validation should be tracked separately."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Create Slack Application",
+			"complexityScore": 4,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "List subtasks for Slack app creation, manifest import, enabling Socket Mode, generating tokens, and updating environment configuration.",
+			"reasoning": "The process is well-defined but involves multiple manual steps and integration points. Each step is distinct and should be tracked to avoid misconfiguration."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Implement Core Slack Bot Functionality",
+			"complexityScore": 7,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Decompose into subtasks for mention handling, response formatting, message parsing, retrieval pipeline integration, thread reply, error handling, and comprehensive testing.",
+			"reasoning": "This task requires backend development, Slack API integration, error handling, and testing. The logic is non-trivial and touches multiple code areas, increasing complexity."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Set Up Confluence API Authentication",
+			"complexityScore": 5,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Expand into subtasks for connector modification, token authentication, base URL setup, secure token storage, connectivity testing, and .env configuration.",
+			"reasoning": "API authentication setup is moderately complex due to security considerations and the need for robust testing and configuration."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Implement Confluence Document Ingestion",
+			"complexityScore": 8,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into subtasks for connector and job supervisor updates, full sync, incremental sync, content extraction, metadata preservation, chunking, space selection, and error handling.",
+			"reasoning": "This task involves data ingestion, incremental sync logic, metadata handling, and error management. The number of moving parts and integration points makes it highly complex."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Configure Google Drive Service Account",
+			"complexityScore": 6,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "List subtasks for project creation, API enabling, service account setup, credential download, connector modification, domain delegation, and .env update.",
+			"reasoning": "Setting up a Google service account with domain delegation and integrating it into the backend involves several configuration and security-sensitive steps."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement Google Drive Document Processing",
+			"complexityScore": 8,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Decompose into subtasks for connector updates, processing each document type, folder selection, permission mirroring, push notifications, incremental sync, error handling, and testing.",
+			"reasoning": "Processing multiple document types, handling permissions, and implementing real-time updates is complex and requires careful design and testing."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Optimize Vector Search Configuration",
+			"complexityScore": 7,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Expand into subtasks for config file updates, search weight tuning, chunk size adjustments, schema updates, hybrid search setup, reranking, performance optimization, and benchmarking.",
+			"reasoning": "Optimizing search involves both code and infrastructure changes, as well as performance tuning and validation, making it a complex, multi-faceted task."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Configure Claude LLM Integration",
+			"complexityScore": 7,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "List subtasks for factory modification, LiteLLM configuration, system prompt setup, citation handling, token management, fallback logic, and caching implementation.",
+			"reasoning": "Integrating an LLM with prompt engineering, citation logic, and performance optimizations requires backend expertise and careful validation."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implement Channel-to-DocSet Mapping",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down into subtasks for database migration, scope filtering logic, configuration retrieval, bot modification, and default config implementation.",
+			"reasoning": "This task involves schema changes and logic updates to support channel-specific behavior, which is moderately complex."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Create Channel Management UI",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Expand into subtasks for UI creation, channel listing, document set configuration, model selection, config testing, validation, API endpoints, and real-time updates.",
+			"reasoning": "Building an admin UI with real-time updates and validation, plus backend integration, is a complex frontend and backend task."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Optimize Docker for Production",
+			"complexityScore": 5,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "List subtasks for production compose file creation, service removal, health checks, resource limits, logging setup, environment config, container optimization, and restart policies.",
+			"reasoning": "Production Docker configuration involves several best practices and validation steps, but each is well-understood and can be tracked as a subtask."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Set Up Monitoring and Observability",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Decompose into subtasks for metrics file creation, Prometheus setup, monitoring directory, Grafana dashboards, analytics tracking, query monitoring, alerting, and log analysis.",
+			"reasoning": "Monitoring setup spans backend code, infrastructure, and alerting, requiring coordination and validation across the stack."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Create AWS Infrastructure with Terraform",
+			"complexityScore": 8,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Expand into subtasks for Terraform module creation, EKS setup, RDS configuration, ElastiCache setup, S3 creation, Secrets Manager, networking, auto-scaling, and IAM roles.",
+			"reasoning": "Provisioning AWS infrastructure with Terraform is a large, multi-component task requiring expertise in cloud architecture, security, and automation."
+		}
+	]
+}

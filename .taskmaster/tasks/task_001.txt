@@ -1,0 +1,66 @@
+# Task ID: 1
+# Title: Fork and Rebrand Onyx Repository
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Create SambaAI from Onyx v0.29.1 fork by replacing all references to 'Onyx' and 'DanswerBot' with 'SambaAI', updating logo files, Docker image names, and Python package names.
+# Details:
+1. Fork the Onyx v0.29.1 repository
+2. Perform global find/replace:
+   - 'Onyx' → 'SambaAI'
+   - 'DanswerBot' → 'SambaAI'
+3. Replace logo files in `web/public/`
+4. Update Docker image names in `docker-compose.dev.yml`
+5. Update Python package names in `backend/setup.py`
+6. Verify all references have been updated
+7. Test build to ensure no breaking changes
+
+# Test Strategy:
+1. Verify no 'Onyx' or 'DanswerBot' references remain using grep
+2. Build Docker images to confirm they build successfully
+3. Run the application locally to verify branding appears correctly
+4. Check package imports work correctly
+
+# Subtasks:
+## 1. Fork the Existing Repository [pending]
+### Dependencies: None
+### Description: Create a new fork of the current codebase to serve as the foundation for the rebranded project.
+### Details:
+Ensure all history is preserved and access permissions are set for the new repository.
+
+## 2. Global Search and Replace of Brand References [pending]
+### Dependencies: 1.1
+### Description: Perform a comprehensive search and replace to update all instances of the old brand name and identifiers across code, documentation, and configuration files.
+### Details:
+Use automated tools to minimize manual errors and ensure consistency throughout the project.
+
+## 3. Update Logo and Visual Assets [pending]
+### Dependencies: 1.2
+### Description: Replace all old logos and visual brand assets with new ones reflecting the rebranded identity.
+### Details:
+Update image files, icons, and any embedded branding in documentation or UI components.
+
+## 4. Rename Docker Images and Update References [pending]
+### Dependencies: 1.2
+### Description: Rename Docker images to match the new brand and update all references in Dockerfiles, CI/CD pipelines, and documentation.
+### Details:
+Ensure that image repositories and tags are consistent with the new naming convention.
+
+## 5. Rename Python Packages and Modules [pending]
+### Dependencies: 1.2
+### Description: Update Python package names, module imports, and distribution metadata to reflect the new brand.
+### Details:
+Modify setup files, requirements, and any namespace references as needed.
+
+## 6. Verify All References and Branding Updates [pending]
+### Dependencies: 1.3, 1.4, 1.5
+### Description: Conduct a thorough review to ensure all references to the old brand have been updated across code, assets, documentation, and configuration.
+### Details:
+Perform manual and automated checks to catch any missed instances.
+
+## 7. Build and Test Validation [pending]
+### Dependencies: None
+### Description: Run all build processes and automated tests to confirm that the rebranded project functions correctly and all changes are integrated successfully.
+### Details:
+Address any issues that arise and ensure the project is ready for release under the new brand.
+

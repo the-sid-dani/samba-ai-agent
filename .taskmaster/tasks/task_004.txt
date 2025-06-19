@@ -1,0 +1,66 @@
+# Task ID: 4
+# Title: Implement Core Slack Bot Functionality
+# Status: pending
+# Dependencies: 3
+# Priority: high
+# Description: Implement the core bot functionality to handle mentions, process queries, and format responses with citations in the Slack interface.
+# Details:
+1. Modify `backend/onyx/slack/bot.py` to implement:
+   - `handle_mention(event: dict)` function to process @sambaai mentions
+   - `format_response(answer: str, sources: List[Source])` function to format answers with citations
+2. Implement message extraction logic to parse queries from Slack messages
+3. Connect to the retrieval pipeline to get answers
+4. Format responses with proper citations and source links
+5. Implement thread reply functionality
+6. Add error handling for API failures and timeouts
+
+# Test Strategy:
+1. Test the bot responds to @sambaai mentions
+2. Verify responses include proper citations
+3. Confirm replies are posted in the correct thread
+4. Test error handling by simulating API failures
+5. Verify the bot handles different message formats correctly
+
+# Subtasks:
+## 1. Implement Mention Handling [pending]
+### Dependencies: None
+### Description: Develop logic to detect and process user and bot mentions in Slack messages, ensuring the bot responds only when appropriate.
+### Details:
+Parse incoming Slack events for mention patterns and extract relevant user or bot IDs.
+
+## 2. Develop Message Parsing Module [pending]
+### Dependencies: 4.1
+### Description: Create a module to parse incoming Slack messages, extracting commands, mentions, and relevant metadata for downstream processing.
+### Details:
+Support various message formats, including plain text, attachments, and blocks.
+
+## 3. Integrate Retrieval Pipeline [pending]
+### Dependencies: 4.2
+### Description: Connect the message parsing output to the retrieval pipeline, enabling the bot to fetch relevant information or responses based on parsed content.
+### Details:
+Ensure seamless data flow between parsing and retrieval components.
+
+## 4. Implement Response Formatting [pending]
+### Dependencies: 4.3
+### Description: Format the retrieved information into Slack-compatible messages, supporting rich formatting, blocks, and attachments as needed.
+### Details:
+Ensure responses are clear, concise, and adhere to Slack design guidelines.
+
+## 5. Enable Threaded Replies [pending]
+### Dependencies: 4.4
+### Description: Add support for replying within Slack threads, maintaining context and ensuring responses are posted in the correct conversation flow.
+### Details:
+Utilize Slack's thread_ts property to associate replies with the correct parent message.
+
+## 6. Implement Error Handling [pending]
+### Dependencies: 4.5
+### Description: Develop robust error handling for all stages, including message parsing, retrieval, formatting, and Slack API interactions.
+### Details:
+Log errors, provide user-friendly error messages, and ensure system stability.
+
+## 7. Comprehensive Testing [pending]
+### Dependencies: None
+### Description: Design and execute tests covering all components, including unit, integration, and end-to-end scenarios for mention handling, parsing, retrieval, formatting, threading, and error cases.
+### Details:
+Automate tests where possible and document test coverage and results.
+

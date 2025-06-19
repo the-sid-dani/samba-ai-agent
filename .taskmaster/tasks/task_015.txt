@@ -1,0 +1,103 @@
+# Task ID: 15
+# Title: Create AWS Infrastructure with Terraform
+# Status: pending
+# Dependencies: 13, 14
+# Priority: low
+# Description: Develop Terraform modules for GCP infrastructure to deploy SambaAI, including Compute Engine VM instances, Cloud SQL PostgreSQL, Memorystore Redis, Cloud Storage, and Secret Manager.
+# Details:
+1. Create `deployment/terraform/gcp/main.tf`
+2. Define Compute Engine VM instances (e2-standard-4 or e2-standard-8)
+3. Configure Cloud SQL PostgreSQL instance
+4. Set up Memorystore Redis
+5. Create Cloud Storage bucket for document storage
+6. Configure Secret Manager for sensitive data
+7. Set up networking and firewall rules
+8. Configure DNS for domain pointing to GCP external IP
+9. Define IAM roles and permissions
+10. Set up Let's Encrypt for SSL certificates
+11. Install Docker and dependencies
+12. Deploy SambaAI using Docker Compose
+13. Configure monitoring and logging
+
+# Test Strategy:
+1. Verify Terraform applies cleanly
+2. Test all services are healthy after deployment
+3. Confirm secrets are managed properly
+4. Verify Docker containers are running correctly
+5. Verify networking, DNS, and SSL are configured correctly
+6. Test HTTPS access to the SambaAI application
+7. Verify monitoring and logging are properly configured
+
+# Subtasks:
+## 1. Design Terraform Module Structure [pending]
+### Dependencies: None
+### Description: Define the overall structure for Terraform modules, including directory layout, naming conventions, and documentation standards.
+### Details:
+Establish a consistent structure for all modules (e.g., variables.tf, main.tf, outputs.tf, versions.tf, README.md) and set naming/documentation guidelines to ensure maintainability and clarity.[3][5]
+
+## 2. Implement Networking Module [pending]
+### Dependencies: 15.1
+### Description: Create a Terraform module to provision VPC networks, subnets, routes, and firewall rules required for the GCP infrastructure.
+### Details:
+Ensure the networking module encapsulates all networking resources and exposes outputs for use by dependent modules (e.g., subnet IDs, VPC ID). Configure firewall rules to allow HTTPS traffic.
+
+## 3. Develop IAM Roles and Permissions Module [pending]
+### Dependencies: 15.1
+### Description: Create a module to manage IAM roles, permissions, and service accounts needed by Compute Engine, Cloud SQL, Memorystore, and other GCP services.
+### Details:
+Define least-privilege IAM roles and permissions, ensuring privilege boundaries are respected and outputs are available for other modules.[2][4]
+
+## 4. Create Compute Engine Module [pending]
+### Dependencies: 15.2, 15.3
+### Description: Develop a module to provision Google Compute Engine VM instances for SambaAI Docker-based deployment, including instance configuration and startup scripts.
+### Details:
+Parameterize the module for instance types (e2-standard-4 or e2-standard-8), disk size (500GB), and networking. Include startup scripts to install git, docker, and docker-compose. Ensure integration with IAM and networking modules.
+
+## 5. Configure Cloud SQL Module [pending]
+### Dependencies: 15.2, 15.3
+### Description: Build a module to provision a Google Cloud SQL PostgreSQL instance, including networking configuration and security settings.
+### Details:
+Allow configuration of instance size, storage, and networking. Ensure outputs for connection endpoint and credentials.
+
+## 6. Set Up Memorystore Module [pending]
+### Dependencies: 15.2, 15.3
+### Description: Develop a module to provision Memorystore Redis instances, including networking configuration and security settings.
+### Details:
+Parameterize for Redis version, node count, and networking. Output connection endpoints.
+
+## 7. Provision Cloud Storage Module [pending]
+### Dependencies: 15.3
+### Description: Create a module to provision Cloud Storage buckets for application storage, backups, or logging, with appropriate policies and encryption.
+### Details:
+Support configuration of bucket policies, versioning, encryption, and lifecycle rules. Output bucket names and URLs.
+
+## 8. Implement Secret Manager Module [pending]
+### Dependencies: 15.3
+### Description: Develop a module to manage secrets in Google Secret Manager, including creation and access controls.
+### Details:
+Allow creation of secrets for database credentials, API keys, etc., and ensure IAM roles have appropriate access.
+
+## 9. Configure DNS and SSL [pending]
+### Dependencies: 15.4
+### Description: Set up DNS configuration for domain pointing to GCP external IP and implement Let's Encrypt for SSL certificates.
+### Details:
+Create Terraform resources to manage DNS records and automate Let's Encrypt certificate issuance and renewal. Ensure proper integration with Compute Engine instances.
+
+## 10. Create Docker Deployment Configuration [pending]
+### Dependencies: 15.4
+### Description: Develop configuration for Docker and Docker Compose deployment of SambaAI on Compute Engine instances.
+### Details:
+Create templates for docker-compose.yml and related configuration files. Include setup for container orchestration, networking, and volume management.
+
+## 11. Configure Monitoring and Logging [pending]
+### Dependencies: 15.4, 15.10
+### Description: Set up monitoring and logging for the SambaAI deployment on GCP.
+### Details:
+Implement Cloud Monitoring and Cloud Logging for the Compute Engine instances and SambaAI application. Configure alerts and dashboards for key metrics.
+
+## 12. Create Deployment Documentation [pending]
+### Dependencies: 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8, 15.9, 15.10, 15.11
+### Description: Document the deployment process for SambaAI on GCP using the Terraform modules.
+### Details:
+Create comprehensive documentation covering the deployment process, configuration options, and troubleshooting steps for the SambaAI GCP deployment.
+

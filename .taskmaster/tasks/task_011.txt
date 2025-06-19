@@ -1,0 +1,60 @@
+# Task ID: 11
+# Title: Implement Channel-to-DocSet Mapping
+# Status: pending
+# Dependencies: 4, 10
+# Priority: medium
+# Description: Create the database schema and logic for channel scoping, allowing different Slack channels to access different document sets.
+# Details:
+1. Create database migration for `channel_config` table:
+```sql
+CREATE TABLE channel_config (
+    channel_id VARCHAR PRIMARY KEY,
+    channel_name VARCHAR,
+    doc_scopes JSONB,  -- ["engineering", "product"]
+    llm_model VARCHAR DEFAULT 'claude-3-sonnet',
+    max_tokens INT DEFAULT 500
+);
+```
+2. Implement channel scope filtering in query pipeline
+3. Add logic to retrieve channel configuration
+4. Modify bot to use channel-specific settings
+5. Implement default configuration for new channels
+
+# Test Strategy:
+1. Verify table is created and migrated correctly
+2. Test channel scope filtering with different configurations
+3. Confirm bot uses channel-specific settings
+4. Test default configuration for new channels
+5. Verify different channels get different document sets
+
+# Subtasks:
+## 1. Plan and Execute Database Migration [pending]
+### Dependencies: None
+### Description: Design and implement schema changes to support channel-specific configuration. Migrate existing data as needed, ensuring data integrity and minimal downtime.
+### Details:
+Analyze current schema, define new tables/fields for channel-specific config, plan migration strategy (e.g., trickle or zero-downtime), and execute migration with testing.
+
+## 2. Implement Scope Filtering Logic [pending]
+### Dependencies: 11.1
+### Description: Update or create logic to filter and apply configuration based on channel scope, ensuring correct behavior per channel.
+### Details:
+Modify backend logic to retrieve and apply configuration at the channel level, including fallback to defaults if no channel-specific config exists.
+
+## 3. Develop Configuration Retrieval Mechanism [pending]
+### Dependencies: 11.2
+### Description: Build or update the system to retrieve configuration for a given channel, supporting both specific and default configurations.
+### Details:
+Implement efficient queries and caching as needed to fetch channel-specific or default config, and expose retrieval via API or internal interfaces.
+
+## 4. Modify Bot to Support Channel-Specific Configurations [pending]
+### Dependencies: 11.3
+### Description: Update the bot's logic to utilize the new configuration retrieval mechanism and apply channel-specific settings during operation.
+### Details:
+Refactor bot code to request and use channel-specific config, ensuring backward compatibility and correct behavior in all channels.
+
+## 5. Implement and Test Default Configuration Fallback [pending]
+### Dependencies: 11.4
+### Description: Ensure that the system correctly falls back to a default configuration when no channel-specific config is present, and thoroughly test this behavior.
+### Details:
+Define default config, implement fallback logic, and write tests to verify correct application of defaults in all relevant scenarios.
+

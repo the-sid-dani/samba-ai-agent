@@ -1,0 +1,61 @@
+# Task ID: 5
+# Title: Set Up Confluence API Authentication
+# Status: pending
+# Dependencies: 2
+# Priority: medium
+# Description: Configure Confluence API access by implementing token-based authentication for the SambaTv Confluence instance.
+# Details:
+1. Modify `backend/onyx/connectors/confluence/connector.py`
+2. Implement API Token authentication flow
+3. Configure base URL to use https://sambatv.atlassian.net/wiki
+4. Set up cloud instance settings
+5. Add secure token storage mechanism
+6. Implement test function to verify connectivity
+7. Add configuration options to .env file:
+   - CONFLUENCE_API_TOKEN=xxx
+   - CONFLUENCE_USERNAME=xxx@sambatv.com
+
+# Test Strategy:
+1. Generate a test API token in Atlassian
+2. Verify the connector authenticates successfully
+3. Test listing accessible spaces
+4. Confirm token is stored securely (not in logs)
+5. Test error handling for invalid credentials
+
+# Subtasks:
+## 1. Modify Connector for Token Authentication [pending]
+### Dependencies: None
+### Description: Update the existing connector code to support token-based authentication, ensuring that authentication logic is encapsulated and reusable.
+### Details:
+Refactor the connector to accept and use tokens for API requests, following best practices for modularity and error handling.
+
+## 2. Implement Base URL Configuration [pending]
+### Dependencies: 5.1
+### Description: Set up the connector to use a configurable base URL for API endpoints, avoiding hardcoded values.
+### Details:
+Allow the base URL to be set via configuration or environment variables to support different environments and API versions.
+
+## 3. Configure Secure Token Storage [pending]
+### Dependencies: 5.1
+### Description: Establish a secure method for storing and retrieving authentication tokens, minimizing exposure to security risks.
+### Details:
+Use environment variables or a secure vault to store tokens, ensuring they are not exposed in code or logs.
+
+## 4. Set Up .env Configuration [pending]
+### Dependencies: 5.2, 5.3
+### Description: Create or update a .env file to manage sensitive configuration values such as tokens and base URLs.
+### Details:
+Document required environment variables and ensure the connector reads from the .env file at runtime.
+
+## 5. Test API Connectivity and Authentication [pending]
+### Dependencies: 5.4
+### Description: Verify that the connector can successfully authenticate and connect to the API using the configured token and base URL.
+### Details:
+Perform integration tests to ensure the connector handles authentication, connectivity, and error scenarios robustly.
+
+## 6. Review and Harden Security Measures [pending]
+### Dependencies: 5.5
+### Description: Audit the connector for security best practices, focusing on token handling, error logging, and configuration management.
+### Details:
+Ensure no sensitive data is logged, tokens are securely managed, and the connector is resilient to common security threats.
+

@@ -1,0 +1,211 @@
+# Task ID: 16
+# Title: Create Manual GCP Deployment Process
+# Status: pending
+# Dependencies: 1, 2, 13
+# Priority: medium
+# Description: Develop a step-by-step manual deployment process for SambaAI on Google Cloud Platform, including VM setup, networking configuration, and application deployment.
+# Details:
+1. Create GCP VM instance:
+   - Provision e2-standard-4 or e2-standard-8 instance
+   - Configure with 16GB RAM and 500GB SSD persistent disk
+   - Use Debian 11 or Ubuntu 22.04 LTS as the base OS
+   - Set appropriate region based on target users
+
+2. Configure networking and security:
+   - Allow HTTPS traffic (port 443) in firewall settings
+   - Create a static external IP address for the VM
+   - Configure DNS records to point domain to VM external IP
+   - Set up proper network tags for firewall rules
+
+3. Install dependencies on VM:
+   ```bash
+   # Update package lists
+   sudo apt update
+   
+   # Install Git
+   sudo apt install -y git
+   
+   # Install Docker
+   sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+   sudo apt update
+   sudo apt install -y docker-ce
+   
+   # Add current user to docker group
+   sudo usermod -aG docker $USER
+   
+   # Install Docker Compose
+   sudo curl -L "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   sudo chmod +x /usr/local/bin/docker-compose
+   ```
+
+4. Clone and configure SambaAI:
+   ```bash
+   # Clone repository
+   git clone https://github.com/SambaAI/SambaAI.git
+   cd SambaAI/deployment/docker_compose
+   
+   # Copy and configure environment files
+   cp .env.example .env
+   cp .env.nginx.example .env.nginx
+   ```
+
+5. Configure environment files:
+   - In `.env.nginx`:
+     - Set `DOMAIN=yourdomain.com`
+     - Set `CERTBOT_EMAIL=admin@yourdomain.com`
+   - In `.env`:
+     - Configure database credentials
+     - Set API keys for LLM providers
+     - Configure Slack tokens
+     - Set other application-specific settings
+
+6. Set up SSL certificates:
+   ```bash
+   # Run the Let's Encrypt initialization script
+   sudo ./init-letsencrypt.sh
+   ```
+
+7. Start the application:
+   ```bash
+   # Start all services
+   docker-compose -f docker-compose.prod.yml up -d
+   ```
+
+8. Monitor deployment:
+   ```bash
+   # Check container status
+   docker-compose ps
+   
+   # View logs
+   docker-compose logs -f
+   ```
+
+9. Verify deployment:
+   - Access the application via HTTPS at your domain
+   - Test Slack bot functionality
+   - Verify document indexing works correctly
+   - Test search and retrieval functionality
+
+10. Document the deployment:
+    - Record all configuration settings
+    - Document any custom modifications
+    - Create backup procedures
+    - Document scaling considerations
+
+# Test Strategy:
+1. Verify VM provisioning:
+   - Confirm VM is running with correct specifications
+   - Verify disk space is properly allocated
+   - Check CPU and memory resources
+
+2. Test network configuration:
+   - Verify external IP is assigned correctly
+   - Confirm DNS records are resolving to the VM IP
+   - Test HTTPS connectivity to the server
+   - Verify firewall rules are correctly configured
+
+3. Validate dependency installation:
+   - Check Git version: `git --version`
+   - Verify Docker installation: `docker --version`
+   - Confirm Docker Compose installation: `docker-compose --version`
+   - Test Docker functionality: `docker run hello-world`
+
+4. Verify application deployment:
+   - Confirm all containers are running: `docker-compose ps`
+   - Check for any error messages in logs: `docker-compose logs`
+   - Verify database migrations completed successfully
+   - Confirm Redis is operational
+
+5. Test SSL configuration:
+   - Verify SSL certificate is valid and not expired
+   - Test HTTPS access to the application
+   - Check SSL rating using SSL Labs (should be A or A+)
+
+6. Validate application functionality:
+   - Test user login and authentication
+   - Verify document indexing works correctly
+   - Test search functionality with various queries
+   - Confirm Slack bot responds to mentions
+   - Test document retrieval and citation functionality
+
+7. Performance testing:
+   - Monitor resource usage during normal operation
+   - Test application under load to verify stability
+   - Check database query performance
+   - Monitor memory usage of containers
+
+8. Security verification:
+   - Verify all sensitive data is properly secured
+   - Confirm environment variables are correctly set
+   - Check for exposed ports that should be closed
+   - Verify Docker containers run with appropriate permissions
+
+# Subtasks:
+## 1. Provision and Configure GCP VM Instance [pending]
+### Dependencies: None
+### Description: Set up a Google Cloud Platform virtual machine with the required specifications and operating system for running SambaAI.
+### Details:
+1. Create a new VM instance in GCP Console with e2-standard-4 or e2-standard-8 machine type
+2. Configure with 16GB RAM and 500GB SSD persistent disk
+3. Select Debian 11 or Ubuntu 22.04 LTS as the base OS
+4. Choose appropriate region based on target users' location
+5. Enable HTTP/HTTPS traffic during VM creation
+6. Reserve a static external IP address and assign it to the VM
+7. Set appropriate network tags for firewall rules
+
+## 2. Configure Networking and DNS [pending]
+### Dependencies: None
+### Description: Set up networking components including firewall rules, DNS configuration, and security settings to make the application accessible.
+### Details:
+1. Configure GCP firewall rules to allow HTTPS traffic (port 443)
+2. Set up additional firewall rules as needed for application functionality
+3. Configure DNS records with your domain registrar to point your domain to the VM's static IP
+4. Verify DNS propagation using tools like 'dig' or 'nslookup'
+5. Document all network settings and IP addresses for future reference
+
+## 3. Install System Dependencies and Docker [pending]
+### Dependencies: None
+### Description: Install all required system packages, Docker, and Docker Compose on the VM to prepare for application deployment.
+### Details:
+1. SSH into the VM
+2. Update package lists with 'sudo apt update'
+3. Install Git with 'sudo apt install -y git'
+4. Install Docker prerequisites with 'sudo apt install -y apt-transport-https ca-certificates curl software-properties-common'
+5. Add Docker's official GPG key and repository
+6. Install Docker with 'sudo apt install -y docker-ce'
+7. Add current user to docker group with 'sudo usermod -aG docker $USER'
+8. Install Docker Compose with the curl command provided
+9. Verify installations with 'docker --version' and 'docker-compose --version'
+
+## 4. Deploy SambaAI Application [pending]
+### Dependencies: None
+### Description: Clone the SambaAI repository, configure environment files, set up SSL certificates, and start the application using Docker Compose.
+### Details:
+1. Clone the SambaAI repository with 'git clone https://github.com/SambaAI/SambaAI.git'
+2. Navigate to the deployment directory with 'cd SambaAI/deployment/docker_compose'
+3. Copy example environment files with 'cp .env.example .env' and 'cp .env.nginx.example .env.nginx'
+4. Edit .env.nginx to set your domain and email for SSL certificates
+5. Edit .env to configure database credentials, API keys, Slack tokens, and other application settings
+6. Run the Let's Encrypt initialization script with 'sudo ./init-letsencrypt.sh'
+7. Start the application with 'docker-compose -f docker-compose.prod.yml up -d'
+8. Check container status with 'docker-compose ps'
+
+## 5. Verify Deployment and Create Documentation [pending]
+### Dependencies: None
+### Description: Test the deployed application, verify all functionality works correctly, and create comprehensive documentation for the deployment process.
+### Details:
+1. Access the application via HTTPS at your domain in a web browser
+2. Test Slack bot functionality by sending test messages
+3. Verify document indexing by uploading test documents
+4. Test search and retrieval functionality with various queries
+5. Create detailed documentation including:
+   - All configuration settings used
+   - Any custom modifications made
+   - Backup procedures
+   - Scaling considerations
+   - Troubleshooting steps for common issues
+6. Store documentation in a secure, accessible location
+7. Create a monitoring plan for the production deployment
+

@@ -1,0 +1,76 @@
+# Task ID: 8
+# Title: Implement Google Drive Document Processing
+# Status: pending
+# Dependencies: 7
+# Priority: medium
+# Description: Develop the Google Drive sync functionality to process different document types, implement folder-based selection, and handle permissions and real-time updates.
+# Details:
+1. Modify `backend/onyx/connectors/google_drive/connector.py`
+2. Implement document processing for:
+   - Google Docs → Markdown conversion
+   - Google Sheets → Structured data extraction
+   - PDFs → Text extraction
+   - Google Slides → Content + notes extraction
+3. Set up folder-based selection mechanism
+4. Implement permission mirroring
+5. Configure real-time updates via push notifications
+6. Add incremental sync functionality
+7. Implement proper error handling and retry logic
+
+# Test Strategy:
+1. Test syncing a test folder with various document types
+2. Verify all document types are processed correctly
+3. Confirm permissions are respected in search results
+4. Test that Drive results appear in search
+5. Verify real-time updates work when documents change
+6. Test error handling with invalid documents
+
+# Subtasks:
+## 1. Plan and Execute Connector Updates [pending]
+### Dependencies: None
+### Description: Review current connector versions, schedule updates, and ensure all connectors are upgraded to the latest supported version with minimal downtime.
+### Details:
+Coordinate with stakeholders, follow vendor-specific update procedures, and verify successful completion of updates.
+
+## 2. Identify and Catalog Document Types [pending]
+### Dependencies: 8.1
+### Description: List all document types to be processed by the connector, including their formats and any special handling requirements.
+### Details:
+Gather requirements from business users and technical documentation to ensure comprehensive coverage.
+
+## 3. Implement Document Type Processing Logic [pending]
+### Dependencies: 8.2
+### Description: Develop and update connector logic to correctly process each identified document type, ensuring compatibility and data integrity.
+### Details:
+Include parsing, validation, and transformation steps as needed for each document type.
+
+## 4. Develop Folder Selection Mechanism [pending]
+### Dependencies: 8.3
+### Description: Design and implement a user interface or configuration method for selecting which folders the connector should process.
+### Details:
+Support recursive selection, exclusion rules, and dynamic folder discovery if required.
+
+## 5. Implement Permission Mirroring [pending]
+### Dependencies: 8.4
+### Description: Ensure that the connector accurately mirrors source folder and document permissions to the target system.
+### Details:
+Map permission models between systems, handle inheritance, and test edge cases.
+
+## 6. Integrate Push Notification Support [pending]
+### Dependencies: 8.5
+### Description: Add real-time push notification capabilities to inform users or systems of changes, updates, or errors.
+### Details:
+Leverage existing notification frameworks or implement custom notification logic as needed.
+
+## 7. Enable Incremental Synchronization [pending]
+### Dependencies: None
+### Description: Implement logic to detect and process only changes since the last sync, optimizing performance and reducing resource usage.
+### Details:
+Track sync state, handle deletions, updates, and new items efficiently.
+
+## 8. Develop Robust Error Handling and Testing [pending]
+### Dependencies: None
+### Description: Design comprehensive error handling mechanisms and create a thorough testing plan covering all features and edge cases.
+### Details:
+Include automated tests, manual test cases, and monitoring for production deployments.
+

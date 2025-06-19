@@ -1,0 +1,68 @@
+# Task ID: 7
+# Title: Configure Google Drive Service Account
+# Status: pending
+# Dependencies: 2
+# Priority: medium
+# Description: Set up Google Drive access by creating a service account with domain delegation and configuring the necessary API permissions.
+# Details:
+1. Create a Google Cloud Project
+2. Enable required APIs: Drive, Admin SDK, Docs, Sheets
+3. Create a service account with domain delegation
+4. Download credentials JSON file
+5. Modify `backend/onyx/connectors/google_drive/connector.py` to use service account
+6. Configure domain-wide delegation
+7. Add credentials file to secure location
+8. Update .env with configuration:
+   - GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+   - GOOGLE_ADMIN_EMAIL=admin@sambatv.com
+
+# Test Strategy:
+1. Verify service account is created successfully
+2. Confirm domain-wide delegation is configured
+3. Test that all required APIs are enabled
+4. Validate credentials file is properly loaded
+5. Test authentication with the Google Drive API
+
+# Subtasks:
+## 1. Create Google Cloud Project [pending]
+### Dependencies: None
+### Description: Set up a new project in the Google Cloud Console to serve as the container for all related resources.
+### Details:
+Navigate to the Google Cloud Console, select 'Create Project', provide a project name and organization, and confirm creation.
+
+## 2. Enable Required APIs [pending]
+### Dependencies: 7.1
+### Description: Enable the necessary Google APIs (such as Admin SDK, Calendar API, Drive API, etc.) for the project.
+### Details:
+In the Google Cloud Console, go to 'APIs & Services' > 'Library', search for each required API, and enable them for your project.
+
+## 3. Create Service Account [pending]
+### Dependencies: 7.2
+### Description: Create a service account within the project to allow backend authentication and API access.
+### Details:
+Go to 'IAM & Admin' > 'Service Accounts', click 'Create Service Account', provide a name and description, and complete the creation process.
+
+## 4. Download Service Account Credentials [pending]
+### Dependencies: 7.3
+### Description: Generate and download a JSON key file for the service account to be used by the backend application.
+### Details:
+After creating the service account, select it, go to 'Keys', click 'Add Key', choose 'JSON', and download the credentials file securely.
+
+## 5. Modify Backend Connector for Service Account [pending]
+### Dependencies: 7.4
+### Description: Update the backend connector code to use the downloaded service account credentials for authentication.
+### Details:
+Integrate the JSON key file into the backend codebase and update authentication logic to use service account credentials.
+
+## 6. Delegate Domain-Wide Authority [pending]
+### Dependencies: 7.3
+### Description: Grant the service account domain-wide delegation in the Google Admin Console to allow it to impersonate users.
+### Details:
+Log in to the Admin Console as a super admin, go to 'Security' > 'API Controls' > 'Manage Domain Wide Delegation', add the service account client ID, and specify required OAuth scopes, then authorize.
+
+## 7. Update .env Configuration [pending]
+### Dependencies: 7.4, 7.5, 7.6
+### Description: Add or update environment variables in the .env file to reference the service account credentials and relevant configuration.
+### Details:
+Set environment variables such as the path to the service account JSON, client email, and any required scopes in the .env file used by the backend.
+
