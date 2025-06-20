@@ -16,13 +16,13 @@ mcp_taskmaster-ai_set_task_status --id "3.1" --status "done" # Complete subtask
 **Docker & Development:**
 ```bash
 # Start development stack
-cd onyx/deployment/docker_compose && docker-compose -f docker-compose.dev.yml up -d
+cd sambaai/deployment/docker_compose && docker-compose -f docker-compose.dev.yml up -d
 
 # View logs
-docker-compose -f onyx/deployment/docker_compose/docker-compose.dev.yml logs -f [service]
+docker-compose -f sambaai/deployment/docker_compose/docker-compose.dev.yml logs -f [service]
 
 # Stop all services  
-docker-compose -f onyx/deployment/docker_compose/docker-compose.dev.yml down
+docker-compose -f sambaai/deployment/docker_compose/docker-compose.dev.yml down
 ```
 
 **Git & GitHub:**
@@ -35,18 +35,18 @@ git add . && git commit -m "feat: [description]" # Commit changes
 
 **Testing & Validation:**
 ```bash
-cd onyx/web && npm run test        # Run frontend tests
-cd onyx/web && npm run typecheck   # TypeScript validation
-cd onyx/web && npm run lint        # Linting
-cd onyx/backend && python -m pytest # Backend tests
+cd sambaai/web && npm run test        # Run frontend tests
+cd sambaai/web && npm run typecheck   # TypeScript validation
+cd sambaai/web && npm run lint        # Linting
+cd sambaai/backend && python -m pytest # Backend tests
 ```
 
 ### 📁 Project Structure
 ```
 SambaAI Agent/
-├── onyx/                    # Main codebase (to rebrand → sambaai/)
+├── sambaai/                 # Main codebase (rebranded from Onyx)
 │   ├── backend/             # Python API server & connectors
-│   │   ├── onyx/           # Core app (rename to sambaai/)
+│   │   ├── sambaai/         # Core app (Python package)
 │   │   │   ├── server/     # FastAPI endpoints  
 │   │   │   ├── slack/      # Slack bot logic
 │   │   │   ├── connectors/ # Confluence/Drive connectors
@@ -87,7 +87,7 @@ mcp_taskmaster-ai_set_task_status --id "4" --status "in-progress"
 
 **IMPORTANT:** Tell Claude to `think hard` about the task before coding. Use subagents for complex investigation:
 - "Use a subagent to investigate how Slack Socket Mode works"  
-- "Have a subagent analyze the existing bot structure in `onyx/backend/onyx/slack/`"
+- "Have a subagent analyze the existing bot structure in `sambaai/backend/sambaai/slack/`"
 
 #### 2. Plan Phase (Before Any Code)
 **NEVER start coding immediately.** Always:
@@ -99,7 +99,7 @@ mcp_taskmaster-ai_set_task_status --id "4" --status "in-progress"
 ```bash
 # Log your planning findings
 mcp_taskmaster-ai_update_subtask --id "4.1" --prompt "Analysis complete:
-- Found existing Slack classes in backend/onyx/slack/
+- Found existing Slack classes in backend/sambaai/slack/
 - Need to implement mention handling in SlackBot class
 - Dependencies: Socket Mode setup, message parsing
 - Plan: [detailed steps]"
@@ -163,7 +163,7 @@ mcp_taskmaster-ai_next_task
 - Type hints for all functions
 - FastAPI async patterns  
 - Pydantic models for data validation
-- Follow existing `onyx` naming conventions
+- Follow existing `sambaai` naming conventions
 
 **Docker:**
 - Health checks for all services
@@ -191,7 +191,7 @@ mcp_taskmaster-ai_next_task
 - Mirror folder permissions
 
 **Vector Search (Task 9):**
-- Vespa configuration in `backend/onyx/configs/app_configs.py`
+- Vespa configuration in `backend/sambaai/configs/app_configs.py`
 - Hybrid search: semantic + keyword
 - Chunk size: 512 tokens, mini-chunk: 128
 - Sub-second query response time
