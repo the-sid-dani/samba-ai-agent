@@ -1,0 +1,62 @@
+FROM python:3.11.7-slim-bookworm
+
+LABEL com.sambaai.maintainer="engineering@sambaai.app"
+LABEL com.sambaai.description="This image is for the SambaAI model server which runs all of the \
+AI models for SambaAI. This container and all the code is MIT Licensed and free for all to use. \
+You can find it at https://hub.docker.com/r/sambaai/sambaai-model-server. For more details, \
+visit https://github.com/sambatv/sambaai."
+
+# Default SAMBAAI_VERSION, typically overriden during builds by GitHub Actions.
+ARG SAMBAAI_VERSION=0.0.0-dev
+ENV SAMBAAI_VERSION=${SAMBAAI_VERSION} \
+    SAMBAAI_RUNNING_IN_DOCKER="true"
+
+
+RUN echo "SAMBAAI_VERSION: ${SAMBAAI_VERSION}"
+
+COPY ./requirements/model_server.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --upgrade \
+        --retries 5 \
+        --timeout 30 \
+        -r /tmp/requirements.txt
+
+RUN apt-get remove -y --allow-remove-essential perl-base && \ 
+    apt-get autoremove -y
+
+# Pre-downloading models for setups with limited egress
+# Download tokenizers, distilbert for the SambaAI model
+# Download model weights
+# Run Nomic to pull in the custom architecture and have it cached locally
+RUN python -c "from transformers import AutoTokenizer; \
+AutoTokenizer.from_pretrained('distilbert-base-uncased'); \
+AutoTokenizer.from_pretrained('mixedbread-ai/mxbai-rerank-xsmall-v1'); \
+from huggingface_hub import snapshot_download; \
+snapshot_download(repo_id='onyx-dot-app/hybrid-intent-token-classifier'); \
+snapshot_download(repo_id='onyx-dot-app/information-content-model'); \
+snapshot_download('nomic-ai/nomic-embed-text-v1'); \
+snapshot_download('mixedbread-ai/mxbai-rerank-xsmall-v1'); \
+from sentence_transformers import SentenceTransformer; \
+SentenceTransformer(model_name_or_path='nomic-ai/nomic-embed-text-v1', trust_remote_code=True);"
+
+# In case the user has volumes mounted to /root/.cache/huggingface that they've downloaded while
+# running SambaAI, don't overwrite it with the built in cache folder
+RUN mv /root/.cache/huggingface /root/.cache/temp_huggingface
+
+WORKDIR /app
+
+# Utils used by model server
+COPY ./sambaai/utils/logger.py /app/sambaai/utils/logger.py
+COPY ./sambaai/utils/middleware.py /app/sambaai/utils/middleware.py
+
+# Place to fetch version information
+COPY ./sambaai/__init__.py /app/sambaai/__init__.py
+
+# Shared between SambaAI Backend and Model Server
+COPY ./shared_configs /app/shared_configs
+
+# Model Server main code
+COPY ./model_server /app/model_server
+
+ENV PYTHONPATH=/app
+
+CMD ["uvicorn", "model_server.main:app", "--host", "0.0.0.0", "--port", "9000"]

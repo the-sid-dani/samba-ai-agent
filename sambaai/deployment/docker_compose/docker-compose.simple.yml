@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Core database
+  relational_db:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sambaai123}
+      - POSTGRES_DB=${POSTGRES_DB:-sambaai}
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Redis cache
+  cache:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # API server - build locally
+  api_server:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    image: sambaai-backend:local
+    command: >
+      /bin/sh -c "alembic upgrade head &&
+      echo 'Starting SambaAI Api Server' &&
+      uvicorn sambaai.main:app --host 0.0.0.0 --port 8080 --reload"
+    depends_on:
+      - relational_db
+      - cache
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # Core settings
+      - AUTH_TYPE=${AUTH_TYPE:-disabled}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - SECRET_KEY=${SECRET_KEY:-sambaai-secret-key-change-in-prod}
+      - SECRET=${SECRET_KEY}
+      
+      # Database
+      - POSTGRES_HOST=relational_db
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sambaai123}
+      - POSTGRES_DB=${POSTGRES_DB:-sambaai}
+      
+      # Redis
+      - REDIS_HOST=cache
+      
+      # Model configuration
+      - GEN_AI_MODEL_PROVIDER=${GEN_AI_MODEL_PROVIDER:-litellm}
+      - GEN_AI_MODEL_VERSION=${GEN_AI_MODEL_VERSION:-claude-3-sonnet-20240229}
+      - FAST_GEN_AI_MODEL_VERSION=${FAST_GEN_AI_MODEL_VERSION:-claude-3-haiku-20240307}
+      - GEN_AI_API_KEY=${GEN_AI_API_KEY}
+      - DISABLE_GENERATIVE_AI=${DISABLE_GENERATIVE_AI:-}
+      
+      # Slack (for later)
+      - DANSWER_BOT_SLACK_APP_TOKEN=${DANSWER_BOT_SLACK_APP_TOKEN:-}
+      - DANSWER_BOT_SLACK_BOT_TOKEN=${DANSWER_BOT_SLACK_BOT_TOKEN:-}
+      
+      # Web domain
+      - WEB_DOMAIN=${WEB_DOMAIN:-http://localhost:3000}
+      
+      # Disable Vespa for now
+      - DISABLE_VECTOR_DB=true
+
+volumes:
+  db_volume:
